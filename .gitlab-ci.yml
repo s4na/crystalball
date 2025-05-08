@@ -35,6 +35,7 @@ variables:
 workflow:
   rules:
     - !reference [.default-workflow, rules]
+    - if: $CI_COMMIT_TAG
 
 stages:
   - test
