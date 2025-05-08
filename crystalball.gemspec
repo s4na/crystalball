@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.executables   = [File.basename("bin/crystalball")]
 
-  spec.add_dependency "git", "~> 3.0.0"
+  spec.add_dependency "git", "< 4"
 
   spec.add_development_dependency "actionview", "~> 8.0.2"
   spec.add_development_dependency "activerecord", "~> 8.0.2"
