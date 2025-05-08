@@ -5,7 +5,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "crystalball/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "crystalball-gitlab"
+  spec.name          = "gitlab-crystalball"
   spec.version       = Crystalball::VERSION
   spec.authors       = ["Developer Experience Team"]
   spec.email         = ["developer-experience@gitlab.com"]

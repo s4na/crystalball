@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    crystalball-gitlab (0.7.0)
+    gitlab-crystalball (0.7.0)
       git (~> 3.0.0)
 
 GEM
@@ -196,8 +196,8 @@ PLATFORMS
 DEPENDENCIES
   actionview (~> 8.0.2)
   activerecord (~> 8.0.2)
-  crystalball-gitlab!
   factory_bot (~> 6.5.1)
+  gitlab-crystalball!
   gitlab-styles (~> 13.1.0)
   i18n (~> 1.14.7)
   parser (~> 3.3.8.0)
