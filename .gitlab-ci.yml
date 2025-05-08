@@ -24,6 +24,7 @@ default:
 variables:
   BUNDLE_PATH: vendor/bundle
   BUNDLE_SILENCE_ROOT_WARNING: 1
+  GIT_STRATEGY: clone
 
 workflow:
   rules:
