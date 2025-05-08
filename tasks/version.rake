@@ -18,9 +18,8 @@ module Crystalball
     #
     def add_version_task
       desc("Bump application version [major, minor, patch]")
-      task(:bump_version, [:version_component]) do |_task, args|
+      task(:bump_version, [:version_component] => :setup_git) do |_task, args|
         raise "This task must be executed inside GitLab CI" unless ENV["CI"]
-        raise "'VERSION_UPDATE_TOKEN' variable must be set to token with write repository scope" unless update_token
 
         new_version = case args[:version_component]
                       when "major"
@@ -33,8 +32,6 @@ module Crystalball
                         raise ArgumentError, "You must specify one of these: [major, minor, patch]"
                       end
 
-        setup_git_user
-
         version_string = new_version.format("%M.%m.%p").to_s
         update_version(version_string)
         commit_and_push(version_string)
@@ -43,28 +40,11 @@ module Crystalball
 
     private
 
-    # Update token with write repository scope
-    #
-    # @return [String]
-    def update_token
-      @update_token ||= ENV["VERSION_UPDATE_TOKEN"]
-    end
-
     # Semver of ref from
     #
     # @return [SemVer]
     def version
       @version ||= SemVer.parse(Crystalball::VERSION)
-    end
-
-    # Setup global git user
-    #
-    # @return [void]
-    def setup_git_user
-      log "Setup global user"
-      sh "git remote set-url origin 'https://gitlab-ci-token:#{update_token}@#{ENV['CI_SERVER_HOST']}/#{ENV['CI_PROJECT_PATH']}.git'"
-      sh "git config --global user.name 'CI'"
-      sh "git config --global user.email 'developer-experience@gitlab.com'"
     end
 
     # Update version file
@@ -86,10 +66,8 @@ module Crystalball
     def commit_and_push(new_version)
       log "Commit updated version"
       sh "git add #{VERSION_FILE} Gemfile.lock"
-      sh "git commit -m 'Update version to #{new_version}'"
-      sh "git tag -a #{new_version} -m 'Release version #{new_version}'"
+      sh "git commit -m 'Update version to v#{new_version}'"
       sh "git push origin HEAD:#{ENV['CI_COMMIT_REF_NAME']}"
-      sh "git push origin #{new_version}"
     end
 
     # Print colorized log message
