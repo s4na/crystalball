@@ -1,9 +1,9 @@
 spec:
   inputs:
     semver:
-      description: The semantic version component to bump.
-      options: ['major', 'minor', 'patch']
-      default: 'minor'
+      description: The semantic version component to bump. Skip version update by choosing 'none' input
+      options: ['major', 'minor', 'patch', 'none']
+      default: 'none'
 ---
 
 .cache: &cache
@@ -58,7 +58,7 @@ bump-version:
   script:
     - bundle exec rake bump_version[$[[ inputs.semver ]]]
   rules:
-    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_PIPELINE_SOURCE == "web" && "$[[ inputs.semver ]]" != "none"
 
 # This job requires GEM_HOST_API_KEY variable to be set
 release-gem:
