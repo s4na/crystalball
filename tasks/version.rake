@@ -75,6 +75,7 @@ module Crystalball
       log "Update version to #{new_version}"
       u_version = File.read(VERSION_FILE).gsub(Crystalball::VERSION, new_version)
       File.write(VERSION_FILE, u_version)
+      puts "Updated version in #{VERSION_FILE}"
       log "Update Gemfile.lock"
       sh "bundle install"
     end
