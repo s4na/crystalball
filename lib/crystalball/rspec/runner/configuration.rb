@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/rspec/standard_prediction_builder'
+require "crystalball/rspec/standard_prediction_builder"
 
 module Crystalball
   module RSpec
@@ -9,16 +9,16 @@ module Crystalball
       class Configuration
         def initialize(config = {}) # rubocop:disable Metrics/MethodLength
           @values = {
-            'execution_map_path' => 'tmp/crystalball_data.yml',
-            'map_expiration_period' => 86_400,
-            'repo_path' => Dir.pwd,
-            'requires' => [],
-            'diff_from' => 'HEAD',
-            'diff_to' => nil,
-            'runner_class_name' => 'Crystalball::RSpec::Runner',
-            'prediction_builder_class_name' => 'Crystalball::RSpec::StandardPredictionBuilder',
-            'log_level' => :info,
-            'log_file' => 'log/crystalball.log'
+            "execution_map_path" => "tmp/crystalball_data.yml",
+            "map_expiration_period" => 86_400,
+            "repo_path" => Dir.pwd,
+            "requires" => [],
+            "diff_from" => "HEAD",
+            "diff_to" => nil,
+            "runner_class_name" => "Crystalball::RSpec::Runner",
+            "prediction_builder_class_name" => "Crystalball::RSpec::StandardPredictionBuilder",
+            "log_level" => :info,
+            "log_file" => "log/crystalball.log"
           }.merge(config)
         end
 
@@ -45,7 +45,7 @@ module Crystalball
           @prediction_builder_class ||= begin
             run_requires
 
-            Object.const_get(self['prediction_builder_class_name'])
+            Object.const_get(self["prediction_builder_class_name"])
           end
         end
 
@@ -53,26 +53,26 @@ module Crystalball
           @runner_class ||= begin
             run_requires
 
-            Object.const_get(self['runner_class_name'])
+            Object.const_get(self["runner_class_name"])
           end
         end
 
         def execution_map_path
-          @execution_map_path ||= Pathname.new(raw_value('execution_map_path'))
+          @execution_map_path ||= Pathname.new(raw_value("execution_map_path"))
         end
 
         def repo_path
-          @repo_path ||= Pathname.new(raw_value('repo_path'))
+          @repo_path ||= Pathname.new(raw_value("repo_path"))
         end
 
         def log_file
-          @log_file ||= Pathname.new(raw_value('log_file'))
+          @log_file ||= Pathname.new(raw_value("log_file"))
         end
 
         attr_reader :values
 
         def run_requires
-          Array(self['requires']).each { |f| require f }
+          Array(self["requires"]).each { |f| require f }
         end
       end
     end

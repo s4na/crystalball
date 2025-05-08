@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/path_filter'
+require_relative "../helpers/path_filter"
 
 module Crystalball
   class MapGenerator

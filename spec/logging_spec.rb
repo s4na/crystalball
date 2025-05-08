@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-RSpec.describe 'Logger' do
+RSpec.describe "Logger" do
   let(:output_stream) { StringIO.new }
   let(:log_file_output_stream) { StringIO.new }
-  let(:log_file) { 'tmp/crystalball.log' }
+  let(:log_file) { "tmp/crystalball.log" }
   let!(:stdout_logger) { ::Logger.new(output_stream) }
   let!(:file_logger) { ::Logger.new(log_file_output_stream) }
-  let(:configured_level) { 'warn' }
+  let(:configured_level) { "warn" }
 
   around do |example|
     Crystalball.reset_logger
 
-    old_log_file = ENV['CRYSTALBALL_LOG_FILE']
-    ENV['CRYSTALBALL_LOG_LEVEL'] = configured_level
-    ENV['CRYSTALBALL_LOG_FILE'] = log_file
+    old_log_file = ENV["CRYSTALBALL_LOG_FILE"]
+    ENV["CRYSTALBALL_LOG_LEVEL"] = configured_level
+    ENV["CRYSTALBALL_LOG_FILE"] = log_file
 
     example.run
 
-    ENV['CRYSTALBALL_LOG_FILE'] = old_log_file
-    ENV.delete('CRYSTALBALL_LOG_LEVEL')
+    ENV["CRYSTALBALL_LOG_FILE"] = old_log_file
+    ENV.delete("CRYSTALBALL_LOG_LEVEL")
     Crystalball.reset_logger
   end
 
@@ -29,13 +29,13 @@ RSpec.describe 'Logger' do
     allow(::Logger).to receive(:new).with(Pathname(log_file)).and_return(file_logger)
   end
 
-  it 'logs everything to file' do
+  it "logs everything to file" do
     log_everything
     result = log_file_output_stream.string.delete("\n")
     expect(result).to match(/.*DEBUG.*INFO.*WARN.*ERROR.*FATAL.*UNKNOWN/)
   end
 
-  it 'logs every level equal or above to specified log level' do
+  it "logs every level equal or above to specified log level" do
     log_everything
     result = output_stream.string.delete("\n")
     expect(result).not_to match(/.*DEBUG.*INFO.*/)
@@ -46,11 +46,11 @@ RSpec.describe 'Logger' do
 
   def log_everything
     # A log of each type
-    Crystalball.log(:debug, 'DEBUG')
-    Crystalball.log(:info, 'INFO')
-    Crystalball.log(:warn, 'WARN')
-    Crystalball.log(:error, 'ERROR')
-    Crystalball.log(:fatal, 'FATAL')
-    Crystalball.log(:unknown, 'UNKNOWN')
+    Crystalball.log(:debug, "DEBUG")
+    Crystalball.log(:info, "INFO")
+    Crystalball.log(:warn, "WARN")
+    Crystalball.log(:error, "ERROR")
+    Crystalball.log(:fatal, "FATAL")
+    Crystalball.log(:unknown, "UNKNOWN")
   end
 end

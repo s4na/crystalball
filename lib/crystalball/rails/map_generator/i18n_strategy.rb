@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/base_strategy'
-require 'crystalball/map_generator/helpers/path_filter'
-require 'crystalball/rails/map_generator/i18n_strategy/simple_patch'
+require "crystalball/map_generator/base_strategy"
+require "crystalball/map_generator/helpers/path_filter"
+require "crystalball/rails/map_generator/i18n_strategy/simple_patch"
 
 module Crystalball
   module Rails

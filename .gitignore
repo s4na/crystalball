@@ -1,14 +1,14 @@
 /.bundle/
 /.yardoc
-/Gemfile.lock
 /_yardoc/
 /coverage/
 /doc/
 /pkg/
 /spec/reports/
 /tmp/
-features/tmp/
 /features/fixtures/simple_app/log/
+/vendor/bundle/
+features/tmp/
 
 crystalball_data.yml
 tables_map.yml
@@ -18,5 +18,4 @@ tables_map.yml
 
 .DS_Store
 /.idea
-.ruby-version
-.ruby-gemset
+/.vscode

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative '../feature_helper'
+require_relative "../feature_helper"
 
-describe 'Changing support spec file' do
-  include_context 'simple git repository'
-  include_context 'base forecast'
+describe "Changing support spec file" do
+  include_context "simple git repository"
+  include_context "base forecast"
 
   let(:strategies) { [Crystalball::Predictor::ModifiedSupportSpecs.new] }
 
@@ -16,10 +16,10 @@ describe 'Changing support spec file' do
     CONFIG
   end
 
-  it 'adds full spec to a prediction list' do
+  it "adds full spec to a prediction list" do
     change action_view_shared_context
 
-    expect(forecast).to include_rspec_examples('./spec/views/index.html.erb_spec.rb',
-                                               './spec/views/show.html.erb_spec.rb')
+    expect(forecast).to include_rspec_examples("./spec/views/index.html.erb_spec.rb",
+                                               "./spec/views/show.html.erb_spec.rb")
   end
 end

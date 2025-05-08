@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pathname'
+require "pathname"
 
 module Crystalball
   module RSpec
@@ -18,18 +18,18 @@ module Crystalball
       end
 
       def expired_map?
-        expiration_period = config['map_expiration_period'].to_i
+        expiration_period = config["map_expiration_period"].to_i
         return false unless expiration_period.positive?
 
-        execution_map.timestamp.to_i <= Time.now.to_i - config['map_expiration_period']
+        execution_map.timestamp.to_i <= Time.now.to_i - config["map_expiration_period"]
       end
 
       def execution_map
-        @execution_map ||= Crystalball::MapStorage::YAMLStorage.load(config['execution_map_path'])
+        @execution_map ||= Crystalball::MapStorage::YAMLStorage.load(config["execution_map_path"])
       end
 
       def repo
-        @repo ||= Crystalball::GitRepo.open(config['repo_path'])
+        @repo ||= Crystalball::GitRepo.open(config["repo_path"])
       end
 
       private
@@ -44,9 +44,9 @@ module Crystalball
       # end
       #
       def predictor(&block)
-        raise NotImplementedError, 'Configure `prediction_builder_class_name` in `crystalball.yml` and override `predictor` method' unless block_given?
+        raise NotImplementedError, "Configure `prediction_builder_class_name` in `crystalball.yml` and override `predictor` method" unless block_given?
 
-        @predictor ||= Crystalball::Predictor.new(execution_map, repo, from: config['diff_from'], to: config['diff_to'], &block)
+        @predictor ||= Crystalball::Predictor.new(execution_map, repo, from: config["diff_from"], to: config["diff_to"], &block)
       end
     end
   end

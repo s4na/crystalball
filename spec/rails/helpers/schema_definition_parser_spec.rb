@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe Crystalball::Rails::Helpers::SchemaDefinitionParser do
   subject(:parser) { described_class.new }
@@ -14,23 +14,23 @@ describe Crystalball::Rails::Helpers::SchemaDefinitionParser do
     end
   RUBY
 
-  describe '.parse' do
+  describe ".parse" do
     subject { described_class.parse(schema) }
 
     before do
       allow(described_class).to receive(:new).and_return(parser)
     end
 
-    it 'returns hash with schema info' do
+    it "returns hash with schema info" do
       expect(subject).to eq(
-        'users' => {
+        "users" => {
           options: [
-            ['create_table', {force: :cascade}],
-            ['add_foreign_key', 'users', {column: 'name'}]
+            ["create_table", {force: :cascade}],
+            ["add_foreign_key", "users", {column: "name"}]
           ],
           content: [
             {
-              'name' => {
+              "name" => {
                 options: [[:string, {null: false}]],
                 content: [{}]
               }

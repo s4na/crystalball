@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'crystalball/rails/tables_map'
-require 'crystalball/rails/tables_map_generator/configuration'
+require "crystalball/rails/tables_map"
+require "crystalball/rails/tables_map_generator/configuration"
 
 module Crystalball
   module Rails
@@ -28,7 +28,7 @@ module Crystalball
 
       def initialize
         @configuration = Configuration.new
-        @configuration.commit = repo.object('HEAD').sha if repo
+        @configuration.commit = repo.object("HEAD").sha if repo
         yield @configuration if block_given?
         object_sources_detector.after_register
       end
@@ -61,7 +61,7 @@ module Crystalball
       private
 
       def repo
-        @repo = GitRepo.open('.') unless defined?(@repo)
+        @repo = GitRepo.open(".") unless defined?(@repo)
         @repo
       end
 

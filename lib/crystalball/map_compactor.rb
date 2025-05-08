@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'ostruct'
+require "ostruct"
 
-require 'crystalball/example_group_map'
-require 'crystalball/execution_map'
-require 'crystalball/map_compactor/example_groups_data_compactor'
+require "crystalball/example_group_map"
+require "crystalball/execution_map"
+require "crystalball/map_compactor/example_groups_data_compactor"
 
 module Crystalball
   # a module for compacting execution map by moving out repeated used files to upper contexts records.
@@ -37,7 +37,7 @@ module Crystalball
       private
 
       def example_filename(example_id)
-        example_id.split('[').first
+        example_id.split("[").first
       end
     end
   end

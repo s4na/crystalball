@@ -16,8 +16,8 @@ module Crystalball
 
           return true if patch.empty?
 
-          added = collect_patch(patch, '+')
-          removed = collect_patch(patch, '-')
+          added = collect_patch(patch, "+")
+          removed = collect_patch(patch, "-")
 
           trim_patch(added) == trim_patch(removed)
         end
@@ -32,16 +32,16 @@ module Crystalball
 
         def collect_patch(patch, sign)
           patch.each.with_object([]) do |line, result|
-            next if line.start_with?('+++', '---', '@@') # Skip meta of a patch
+            next if line.start_with?("+++", "---", "@@") # Skip meta of a patch
 
-            result << line[1..-1] if line.start_with?(sign, ' ')
+            result << line[1..-1] if line.start_with?(sign, " ")
           end
         end
 
         def trim_patch(patch)
           patch.map do |line|
-            line = line.gsub(/\s/, '')
-            line.start_with?('#') || line.empty? ? nil : line
+            line = line.gsub(/\s/, "")
+            line.start_with?("#") || line.empty? ? nil : line
           end.compact
         end
       end

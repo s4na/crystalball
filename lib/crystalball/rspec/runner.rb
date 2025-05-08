@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'rspec/core'
-require 'crystalball/rspec/prediction_builder'
-require 'crystalball/rspec/filtering'
-require 'crystalball/rspec/prediction_pruning'
+require "rspec/core"
+require "crystalball/rspec/prediction_builder"
+require "crystalball/rspec/filtering"
+require "crystalball/rspec/prediction_pruning"
 
 module Crystalball
   module RSpec
@@ -13,7 +13,7 @@ module Crystalball
 
       class << self
         def run(args, err = $stderr, out = $stdout)
-          return config['runner_class'].run(args, err, out) unless config['runner_class'] == self
+          return config["runner_class"].run(args, err, out) unless config["runner_class"] == self
 
           Crystalball.log :info, "Crystalball starts to glow..."
           prediction = build_prediction
@@ -30,17 +30,17 @@ module Crystalball
         end
 
         def prepare
-          config['runner_class'].load_execution_map
+          config["runner_class"].load_execution_map
         end
 
         def prediction_builder
-          @prediction_builder ||= config['prediction_builder_class'].new(config)
+          @prediction_builder ||= config["prediction_builder_class"].new(config)
         end
 
         def config
           @config ||= begin
             config_src = if config_file
-                           require 'yaml'
+                           require "yaml"
                            YAML.safe_load(config_file.read)
                          else
                            {}
@@ -62,8 +62,8 @@ module Crystalball
         attr_writer :config, :prediction_builder
 
         def config_file
-          file = Pathname.new(ENV.fetch('CRYSTALBALL_CONFIG', 'crystalball.yml'))
-          file = Pathname.new('config/crystalball.yml') unless file.exist?
+          file = Pathname.new(ENV.fetch("CRYSTALBALL_CONFIG", "crystalball.yml"))
+          file = Pathname.new("config/crystalball.yml") unless file.exist?
           file.exist? ? file : nil
         end
 
@@ -73,7 +73,7 @@ module Crystalball
         end
 
         def check_map
-          Crystalball.log :warn, 'Maps are outdated!' if prediction_builder.expired_map?
+          Crystalball.log :warn, "Maps are outdated!" if prediction_builder.expired_map?
         end
       end
 
@@ -104,4 +104,4 @@ module Crystalball
   end
 end
 
-require 'crystalball/rspec/runner/configuration'
+require "crystalball/rspec/runner/configuration"

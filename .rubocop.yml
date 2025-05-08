@@ -1,24 +1,29 @@
+inherit_gem:
+  gitlab-styles:
+    - rubocop-default.yml
+
+require:
+  - rubocop-rspec
+
+inherit_from:
+  <% unless ENV['REVEAL_RUBOCOP_TODO'] == '1' %>
+  - .rubocop_todo.yml
+  <% end %>
+
+inherit_mode:
+  merge:
+    - Include
+    - Exclude
+    - AllowedPatterns
+
 AllCops:
-  DisplayCopNames: true
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 3.1
+  SuggestExtensions: false
+  NewCops: disable
+
+Rails:
+  Enabled: false
+
 Style/StringLiterals:
-  Enabled: false
-Metrics/LineLength:
-  Enabled: false
-Metrics/BlockLength:
-  Enabled: false
-Metrics/AbcSize:
-  Enabled: false
-Layout/SpaceBeforeBlockBraces:
-  EnforcedStyle: space
-  EnforcedStyleForEmptyBraces: space
-Layout/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
-Naming/UncommunicativeMethodParamName:
-  Enabled: false
-Style/MethodMissingSuper:
-  Enabled: false
-Lint/AmbiguousBlockAssociation:
-  Enabled: false
-Style/DoubleNegation:
-  Enabled: false
+  Enabled: true
+  EnforcedStyle: double_quotes

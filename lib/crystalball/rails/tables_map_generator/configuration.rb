@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/object_sources_detector'
+require "crystalball/map_generator/object_sources_detector"
 
 module Crystalball
   module Rails
@@ -15,7 +15,7 @@ module Crystalball
         attr_writer :object_sources_detector
 
         def map_storage_path
-          @map_storage_path ||= Pathname('tables_map.yml')
+          @map_storage_path ||= Pathname("tables_map.yml")
         end
 
         def map_storage_path=(value)

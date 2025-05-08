@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'crystalball/rails/helpers/schema_definition_parser'
-require 'crystalball/predictor/helpers/affected_example_groups_detector'
+require "crystalball/rails/helpers/schema_definition_parser"
+require "crystalball/predictor/helpers/affected_example_groups_detector"
 
 module Crystalball
   module Rails
@@ -11,7 +11,7 @@ module Crystalball
       # by changed tables
       class ModifiedSchema
         include ::Crystalball::Predictor::Helpers::AffectedExampleGroupsDetector
-        SCHEMA_PATH = 'db/schema.rb'
+        SCHEMA_PATH = "db/schema.rb"
 
         attr_reader :tables_map_path
 

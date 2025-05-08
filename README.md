@@ -3,9 +3,8 @@
 Crystalball is a Ruby library which implements [Regression Test Selection mechanism](https://tenderlovemaking.com/2015/02/13/predicting-test-failues.html) originally published by Aaron Patterson.
 Its main purpose is to select a minimal subset of your test suite which should be run to ensure your changes didn't break anything.
 
-[![Build Status](https://travis-ci.org/toptal/crystalball.svg?branch=master)](https://travis-ci.org/toptal/crystalball)
-[![Maintainability](https://api.codeclimate.com/v1/badges/c8bfc25a43a1a2ecf964/maintainability)](https://codeclimate.com/github/toptal/crystalball/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/c8bfc25a43a1a2ecf964/test_coverage)](https://codeclimate.com/github/toptal/crystalball/test_coverage)
+![Build Status](https://gitlab.com/acunskis/crystalball/badges/main/pipeline.svg)
+![Test Coverage](https://gitlab.com/acunskis/crystalball/badges/main/coverage.svg?job=rspec)
 
 ## Installation
 
@@ -19,19 +18,23 @@ end
 
 And then execute:
 
-    $ bundle
+```console
+  bundle install
+```
 
 Or install it yourself as:
 
-    $ gem install crystalball
+```console
+  gem install crystalball
+```
 
 ## Usage
 
-Please see our [official documentation](https://toptal.github.io/crystalball/).
+Please see our [official documentation](https://gitlab.com/acunskis/crystalball).
 
 ### Versioning
 
-We use [semantic versioning](https://semver.org/) for our [releases](https://github.com/toptal/crystalball/releases).
+We use [semantic versioning](https://semver.org/) for our [releases](https://gitlab.com/acunskis/crystalball/-/releases).
 
 ## Development
 
@@ -41,11 +44,9 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/toptal/crystalball.
+Bug reports and pull requests are welcome on GitHub at <https://github.com/toptal/crystalball>.
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
 Crystalball is released under the [MIT License](https://opensource.org/licenses/MIT).
-
-

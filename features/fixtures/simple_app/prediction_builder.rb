@@ -9,9 +9,9 @@ class PredictionBuilder < ::Crystalball::RSpec::PredictionBuilder
       p.use Crystalball::Predictor::ModifiedExecutionPaths.new
       p.use Crystalball::Predictor::ModifiedSpecs.new
       p.use ::Crystalball::Predictor::AssociatedSpecs
-        .new(from: /(other_important_class)\.rb/, to: './spec/class2_spec.rb')
+        .new(from: /(other_important_class)\.rb/, to: "./spec/class2_spec.rb")
       p.use ::Crystalball::Predictor::AssociatedSpecs
-        .new(from: /(important).*\.rb/, to: './spec/important_dir/')
+        .new(from: /(important).*\.rb/, to: "./spec/important_dir/")
     end
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
-require 'crystalball/factory_bot'
+require "spec_helper"
+require "crystalball/factory_bot"
 
 describe Crystalball::MapGenerator::FactoryBotStrategy::FactoryRunnerPatch do
   subject(:instance) do
@@ -15,29 +15,29 @@ describe Crystalball::MapGenerator::FactoryBotStrategy::FactoryRunnerPatch do
   end
 
   before do
-    class_double('FactoryBotConstant', factory_by_name: nil).as_stubbed_const
+    class_double("FactoryBotConstant", factory_by_name: nil).as_stubbed_const
     allow(Crystalball::MapGenerator::FactoryBotStrategy).to receive(:factory_bot_constant).and_return(FactoryBotConstant)
   end
 
-  context 'FactoryBotConstant::FactoryRunner patching' do
+  context "FactoryBotConstant::FactoryRunner patching" do
     let!(:patched_class) do
       stub_const(
-        '::FactoryBotConstant::FactoryRunner',
+        "::FactoryBotConstant::FactoryRunner",
         Class.new do
           def run(*); end
         end
       )
     end
 
-    it 'changes run method' do
+    it "changes run method" do
       original_run = patched_class.instance_method(:run)
       described_class.apply!
       expect(patched_class.instance_method(:run)).not_to eq original_run
     end
   end
 
-  describe '#run' do
-    subject { instance.run('args', &block) }
+  describe "#run" do
+    subject { instance.run("args", &block) }
     let(:block) { -> {} }
     let(:used_factories) { [] }
 
@@ -49,7 +49,7 @@ describe Crystalball::MapGenerator::FactoryBotStrategy::FactoryRunnerPatch do
 
     it do
       expect { subject }.to change { used_factories }.from([]).to(%w[dummy])
-      is_expected.to eq(['args', block])
+      is_expected.to eq(["args", block])
     end
   end
 end

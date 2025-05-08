@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'logger'
+require "logger"
 
 module Crystalball
   # This module logs information to the standard output based on the configured log level,
@@ -33,15 +33,15 @@ module Crystalball
 
     def log_file_output_stream
       @log_file_output_stream ||= begin
-        config['log_file'].dirname.mkpath
-        ::Logger.new(config['log_file']).tap do |logger|
+        config["log_file"].dirname.mkpath
+        ::Logger.new(config["log_file"]).tap do |logger|
           logger.level = ::Logger::DEBUG
         end
       end
     end
 
     def configured_level
-      config['log_level'].to_sym
+      config["log_level"].to_sym
     end
 
     def config

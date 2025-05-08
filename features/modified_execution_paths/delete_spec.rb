@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../feature_helper'
+require_relative "../feature_helper"
 
-describe 'Deleting source file' do
-  include_context 'simple git repository'
-  include_context 'class1 examples'
-  include_context 'base forecast'
+describe "Deleting source file" do
+  include_context "simple git repository"
+  include_context "class1 examples"
+  include_context "base forecast"
 
   map_generator_config do
     <<~CONFIG
@@ -19,7 +19,7 @@ describe 'Deleting source file' do
     [Crystalball::Predictor::ModifiedExecutionPaths.new]
   end
 
-  it 'adds mapped examples to a prediction list' do
+  it "adds mapped examples to a prediction list" do
     delete class1_path
 
     expect(forecast).to include_rspec_examples(*class1_examples)

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'module2'
+require_relative "module2"
 
 Class2.class_eval do
   extend Module2

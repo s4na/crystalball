@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe Crystalball::Rails::MapGenerator::ActionViewStrategy do
   subject(:strategy) { described_class.new }
 
-  include_examples 'base strategy'
+  include_examples "base strategy"
 
-  describe '#after_start' do
+  describe "#after_start" do
     subject { strategy.after_start }
 
     it do
@@ -16,7 +16,7 @@ describe Crystalball::Rails::MapGenerator::ActionViewStrategy do
     end
   end
 
-  describe '#before_finalize' do
+  describe "#before_finalize" do
     subject { strategy.before_finalize }
 
     specify do
@@ -25,24 +25,24 @@ describe Crystalball::Rails::MapGenerator::ActionViewStrategy do
     end
   end
 
-  describe '#call' do
+  describe "#call" do
     let(:example_group_map) { [] }
 
-    it 'pushes used files to example group map' do
-      allow(strategy).to receive(:filter).with(['view']).and_return([1, 2, 3])
+    it "pushes used files to example group map" do
+      allow(strategy).to receive(:filter).with(["view"]).and_return([1, 2, 3])
 
       expect do
-        subject.call(example_group_map, 'example') do
-          Crystalball::Rails::MapGenerator::ActionViewStrategy.views.push 'view'
+        subject.call(example_group_map, "example") do
+          Crystalball::Rails::MapGenerator::ActionViewStrategy.views.push "view"
         end
       end.to change { example_group_map }.to [1, 2, 3]
     end
 
-    it 'yields example_group_map to a block' do
+    it "yields example_group_map to a block" do
       allow(strategy).to receive(:filter).with([]).and_return([])
 
       expect do |b|
-        subject.call(example_group_map, 'example', &b)
+        subject.call(example_group_map, "example", &b)
       end.to yield_with_args(example_group_map)
     end
   end

@@ -13,6 +13,6 @@ class Class1
   end
 
   def bar
-    'bar of Class1'
+    "bar of Class1"
   end
 end

@@ -25,25 +25,25 @@ RSpec::Matchers.define :include_rspec_examples do |*expected|
 
     contexts = [example_id, file_path]
 
-    inner_groups = inner_path.split(':')
+    inner_groups = inner_path.split(":")
     until inner_groups.empty?
       inner_groups.pop
       contexts << "#{file_path}[#{inner_groups.join(':')}]"
     end
 
-    file_path_groups = file_path.split('/')
+    file_path_groups = file_path.split("/")
     until file_path_groups.empty?
       file_path_groups.pop
-      contexts << file_path_groups.join('/')
+      contexts << file_path_groups.join("/")
     end
     contexts.uniq
   end
 
   def split_example_id(example_id)
-    if example_id.include?('[')
+    if example_id.include?("[")
       /(.*)\[(.*)\]/.match(example_id)[1..-1]
     else
-      [example_id, '']
+      [example_id, ""]
     end
   end
 end
