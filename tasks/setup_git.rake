@@ -33,12 +33,20 @@ module Crystalball
       @update_token ||= ENV["VERSION_UPDATE_TOKEN"]
     end
 
+    # Current branch name
+    #
+    # @return [String]
+    def branch
+      @branch ||= ENV["CI_COMMIT_REF_NAME"]
+    end
+
     # Setup global git user and origin url
     #
     # @return [void]
     def setup_git
       log "Setup global user and origin"
       sh "git remote set-url origin 'https://gitlab-ci-token:#{update_token}@#{ENV['CI_SERVER_HOST']}/#{ENV['CI_PROJECT_PATH']}.git'"
+      sh "git checkout -b #{branch} origin/#{branch}"
       sh "git config --global user.name 'CI'"
       sh "git config --global user.email 'developer-experience@gitlab.com'"
     end

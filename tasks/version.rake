@@ -67,7 +67,7 @@ module Crystalball
       log "Commit updated version"
       sh "git add #{VERSION_FILE} Gemfile.lock"
       sh "git commit -m 'Update version to v#{new_version}'"
-      sh "git push origin HEAD:#{ENV['CI_COMMIT_REF_NAME']}"
+      sh "git push"
     end
 
     # Print colorized log message
