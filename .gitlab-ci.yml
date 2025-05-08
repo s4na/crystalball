@@ -23,7 +23,8 @@ default:
 
 variables:
   BUNDLE_PATH: vendor/bundle
-  BUNDLE_SILENCE_ROOT_WARNING: 1
+  BUNDLE_FROZEN: "true"
+  BUNDLE_SILENCE_ROOT_WARNING: "true"
   GIT_STRATEGY: clone
 
 workflow:
@@ -74,7 +75,6 @@ release-gem:
 changelog:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:v0.23.0
-  needs: [release-gem]
   variables:
     CHANGELOG_FILE: CHANGELOG.md
   before_script:
