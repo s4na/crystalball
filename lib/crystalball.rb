@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-require 'crystalball/logging'
-require 'crystalball/git_repo'
-require 'crystalball/extensions/git'
-require 'crystalball/rspec/prediction_builder'
-require 'crystalball/rspec/runner'
-require 'crystalball/prediction'
-require 'crystalball/predictor'
-require 'crystalball/predictor/modified_execution_paths'
-require 'crystalball/predictor/modified_specs'
-require 'crystalball/predictor/modified_support_specs'
-require 'crystalball/predictor/associated_specs'
-require 'crystalball/example_group_map'
-require 'crystalball/execution_map'
-require 'crystalball/map_generator'
-require 'crystalball/map_generator/configuration'
-require 'crystalball/map_generator/coverage_strategy'
-require 'crystalball/map_generator/allocated_objects_strategy'
-require 'crystalball/map_generator/described_class_strategy'
-require 'crystalball/map_storage/yaml_storage'
-require 'crystalball/map_compactor'
-require 'crystalball/version'
+require "crystalball/logging"
+require "crystalball/git_repo"
+require "crystalball/extensions/git"
+require "crystalball/rspec/prediction_builder"
+require "crystalball/rspec/runner"
+require "crystalball/prediction"
+require "crystalball/predictor"
+require "crystalball/predictor/modified_execution_paths"
+require "crystalball/predictor/modified_specs"
+require "crystalball/predictor/modified_support_specs"
+require "crystalball/predictor/associated_specs"
+require "crystalball/example_group_map"
+require "crystalball/execution_map"
+require "crystalball/map_generator"
+require "crystalball/map_generator/configuration"
+require "crystalball/map_generator/coverage_strategy"
+require "crystalball/map_generator/allocated_objects_strategy"
+require "crystalball/map_generator/described_class_strategy"
+require "crystalball/map_storage/yaml_storage"
+require "crystalball/map_compactor"
+require "crystalball/version"
 
 # Main module for the library
 module Crystalball
@@ -35,7 +35,7 @@ module Crystalball
   #     predictor.use Crystalball::Predictor::ModifiedExecutionPaths.new
   #     predictor.use Crystalball::Predictor::ModifiedSpecs.new
   #   end
-  def self.foresee(workdir: '.', map_path: 'crystalball_data.yml', &block)
+  def self.foresee(workdir: ".", map_path: "crystalball_data.yml", &block)
     map = MapStorage::YAMLStorage.load(Pathname(map_path))
     Predictor.new(map, GitRepo.open(Pathname(workdir)), from: map.commit, &block).prediction.compact
   end

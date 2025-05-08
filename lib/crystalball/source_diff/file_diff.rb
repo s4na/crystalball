@@ -14,15 +14,15 @@ module Crystalball
       end
 
       def modified?
-        !moved? && git_diff.type == 'modified'
+        !moved? && git_diff.type == "modified"
       end
 
       def deleted?
-        git_diff.type == 'deleted'
+        git_diff.type == "deleted"
       end
 
       def new?
-        git_diff.type == 'new'
+        git_diff.type == "new"
       end
 
       # @return relative path to file

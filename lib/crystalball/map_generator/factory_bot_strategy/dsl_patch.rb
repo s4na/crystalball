@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/factory_bot_strategy/dsl_patch/factory_path_fetcher'
+require "crystalball/map_generator/factory_bot_strategy/dsl_patch/factory_path_fetcher"
 
 module Crystalball
   class MapGenerator

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'crystalball/predictor/strategy'
-require 'crystalball/predictor/helpers/affected_example_groups_detector'
+require "crystalball/predictor/strategy"
+require "crystalball/predictor/helpers/affected_example_groups_detector"
 
 module Crystalball
   class Predictor
@@ -27,7 +27,7 @@ module Crystalball
 
           examples = detect_examples(changed_support_files, map)
 
-          examples.map { |e| e.to_s.split('[').first }.uniq
+          examples.map { |e| e.to_s.split("[").first }.uniq
         end
       end
 

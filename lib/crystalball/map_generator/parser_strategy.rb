@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/parser_strategy/processor'
-require 'crystalball/map_generator/helpers/path_filter'
+require "crystalball/map_generator/parser_strategy/processor"
+require "crystalball/map_generator/helpers/path_filter"
 
 module Crystalball
   class MapGenerator
@@ -36,7 +36,7 @@ module Crystalball
         paths = []
         yield example_map, example
         example_map.each do |path|
-          next unless path.end_with?('.rb')
+          next unless path.end_with?(".rb")
 
           used_consts = processor.consts_interacted_with_in(path)
           paths.push(*used_files(used_consts))
@@ -53,7 +53,7 @@ module Crystalball
       end
 
       def files_to_inspect
-        Dir.glob(File.join(root_path, '**/*.rb')).grep(pattern)
+        Dir.glob(File.join(root_path, "**/*.rb")).grep(pattern)
       end
     end
   end

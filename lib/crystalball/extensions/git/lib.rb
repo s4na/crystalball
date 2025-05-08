@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Git
-  # Class wich holds whole collection of raw methods to work with git
+  # Class which holds whole collection of raw methods to work with git
   class Lib
     # `git merge-base ...`. Returns common ancestor for all passed commits
     #
@@ -9,10 +9,9 @@ module Git
     # @return [String]
     def merge_base(*args)
       opts = args.last.is_a?(Hash) ? args.pop : {}
+      arg_opts = opts.filter_map { |k, v| "--#{k}" if v } + args
 
-      arg_opts = opts.map { |k, v| "--#{k}" if v }.compact + args
-
-      command('merge-base', arg_opts)
+      command("merge-base", *arg_opts.flatten)
     end
   end
 end

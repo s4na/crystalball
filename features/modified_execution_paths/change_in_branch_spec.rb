@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../feature_helper'
+require_relative "../feature_helper"
 
-describe 'Changing source file in a branch' do
-  include_context 'simple git repository'
-  include_context 'class1 examples'
-  include_context 'base forecast'
+describe "Changing source file in a branch" do
+  include_context "simple git repository"
+  include_context "class1 examples"
+  include_context "base forecast"
 
   map_generator_config do
     <<~CONFIG
@@ -21,24 +21,24 @@ describe 'Changing source file in a branch' do
 
   let(:model1_examples) do
     [
-      './spec/models/model1_spec.rb[1:1:1]',
-      './spec/models/model1_spec.rb[1:2:1]',
-      './spec/models/model1_spec.rb[1:3:1]',
-      './spec/models/model1_spec.rb[1:4:1]'
+      "./spec/models/model1_spec.rb[1:1:1]",
+      "./spec/models/model1_spec.rb[1:2:1]",
+      "./spec/models/model1_spec.rb[1:3:1]",
+      "./spec/models/model1_spec.rb[1:4:1]"
     ]
   end
 
   before do
     change(class1_path)
     git.add(class1_path.to_s)
-    git.commit('Second commit')
-    git.checkout('HEAD^')
-    git.branch('test').checkout
+    git.commit("Second commit")
+    git.checkout("HEAD^")
+    git.branch("test").checkout
     change(model1_path)
   end
 
-  it 'adds mapped examples to a prediction list for model1 only' do
+  it "adds mapped examples to a prediction list for model1 only" do
     expect(forecast).to include_rspec_examples(*model1_examples)
-    expect(forecast).not_to include_rspec_examples('./spec/models/model2_spec.rb[1:1:1]')
+    expect(forecast).not_to include_rspec_examples("./spec/models/model2_spec.rb[1:1:1]")
   end
 end

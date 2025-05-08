@@ -27,7 +27,7 @@ module Crystalball
 
     def initialize
       @configuration = Configuration.new
-      @configuration.commit = repo.gcommit('HEAD') if repo
+      @configuration.commit = repo.gcommit("HEAD") if repo
       yield @configuration if block_given?
     end
 
@@ -69,7 +69,7 @@ module Crystalball
     attr_accessor :started
 
     def repo
-      @repo = GitRepo.open('.') unless defined?(@repo)
+      @repo = GitRepo.open(".") unless defined?(@repo)
       @repo
     end
 

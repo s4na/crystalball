@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'coverage'
-require 'crystalball/map_generator/base_strategy'
-require 'crystalball/map_generator/coverage_strategy/execution_detector'
+require "coverage"
+require "crystalball/map_generator/base_strategy"
+require "crystalball/map_generator/coverage_strategy/execution_detector"
 
 module Crystalball
   class MapGenerator

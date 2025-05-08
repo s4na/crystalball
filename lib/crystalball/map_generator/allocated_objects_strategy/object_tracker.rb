@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'set'
+require "set"
 
 module Crystalball
   class MapGenerator
@@ -10,7 +10,7 @@ module Crystalball
         attr_reader :only_of
 
         # @param [Array<Module>] only_of - classes or modules to watch on
-        def initialize(only_of: ['Object'])
+        def initialize(only_of: ["Object"])
           @only_of = only_of
           @created_object_classes = Set.new
         end

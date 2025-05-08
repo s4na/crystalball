@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/rspec/prediction_pruning/examples_pruner'
+require "crystalball/rspec/prediction_pruning/examples_pruner"
 
 module Crystalball
   module RSpec
@@ -13,7 +13,7 @@ module Crystalball
       # Class methods for prediction pruning logic
       module ClassMethods
         def examples_limit
-          config['examples_limit'].to_i
+          config["examples_limit"].to_i
         end
 
         private

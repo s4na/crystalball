@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'parser/current'
+require "parser/current"
 
 module Crystalball
   class MapGenerator

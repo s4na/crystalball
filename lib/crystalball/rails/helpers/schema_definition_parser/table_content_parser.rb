@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/rails/helpers/base_schema_parser'
+require "crystalball/rails/helpers/base_schema_parser"
 
 module Crystalball
   module Rails

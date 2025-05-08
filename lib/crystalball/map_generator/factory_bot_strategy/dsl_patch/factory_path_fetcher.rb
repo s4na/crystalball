@@ -21,7 +21,7 @@ module Crystalball
               end
             end
 
-            factory_definition_call.split(':').first
+            factory_definition_call.split(":").first
           end
         end
       end

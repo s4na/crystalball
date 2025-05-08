@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 describe Crystalball::MapGenerator::BaseStrategy do
   subject do
@@ -8,9 +8,9 @@ describe Crystalball::MapGenerator::BaseStrategy do
       o.extend described_class
     end
   end
-  include_examples 'base strategy'
+  include_examples "base strategy"
 
-  describe '#call' do
+  describe "#call" do
     specify do
       expect do
         subject.call(1, 2)

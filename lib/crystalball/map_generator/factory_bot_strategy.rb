@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/factory_bot_strategy/factory_gem_loader'
+require "crystalball/map_generator/factory_bot_strategy/factory_gem_loader"
 
 Crystalball::MapGenerator::FactoryBotStrategy::FactoryGemLoader.require!
 
-require 'crystalball/map_generator/base_strategy'
-require 'crystalball/map_generator/helpers/path_filter'
-require 'crystalball/map_generator/factory_bot_strategy/dsl_patch'
-require 'crystalball/map_generator/factory_bot_strategy/factory_runner_patch'
+require "crystalball/map_generator/base_strategy"
+require "crystalball/map_generator/helpers/path_filter"
+require "crystalball/map_generator/factory_bot_strategy/dsl_patch"
+require "crystalball/map_generator/factory_bot_strategy/factory_runner_patch"
 
 module Crystalball
   class MapGenerator

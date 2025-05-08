@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-shared_context 'simple git repository' do
-  let(:features_root) { Pathname(__dir__).join('..', '..', '..', 'features') }
-  let(:fixtures_path) { features_root.join('fixtures') }
-  let(:simple_app_path) { fixtures_path.join('simple_app') }
-  let(:tmp_path) { features_root.join('tmp') }
-  let(:root) { tmp_path.join('simple_app') }
-  let(:lib_path) { root.join('lib') }
-  let(:class1_path) { lib_path.join('class1.rb') }
-  let(:class2_path) { lib_path.join('class2.rb') }
-  let(:model1_path) { root.join('models', 'model1.rb') }
-  let(:spec_path) { root.join('spec') }
-  let(:class1_spec_path) { spec_path.join('class1_spec.rb') }
-  let(:action_view_shared_context) { spec_path.join('support', 'shared_contexts', 'action_view.rb') }
+shared_context "simple git repository" do
+  let(:features_root) { Pathname(__dir__).join("..", "..", "..", "features") }
+  let(:fixtures_path) { features_root.join("fixtures") }
+  let(:simple_app_path) { fixtures_path.join("simple_app") }
+  let(:tmp_path) { features_root.join("tmp") }
+  let(:root) { tmp_path.join("simple_app") }
+  let(:lib_path) { root.join("lib") }
+  let(:class1_path) { lib_path.join("class1.rb") }
+  let(:class2_path) { lib_path.join("class2.rb") }
+  let(:model1_path) { root.join("models", "model1.rb") }
+  let(:spec_path) { root.join("spec") }
+  let(:class1_spec_path) { spec_path.join("class1_spec.rb") }
+  let(:action_view_shared_context) { spec_path.join("support", "shared_contexts", "action_view.rb") }
   let(:git) { Git.init(root.to_s) }
-  let(:spec_helper) { File.join(root, 'spec/spec_helper.rb') }
+  let(:spec_helper) { File.join(root, "spec/spec_helper.rb") }
 
   # By default, generate map with metadata only
   let(:map_generator_config) do
@@ -29,7 +29,7 @@ shared_context 'simple git repository' do
     FileUtils.cp_r(simple_app_path, tmp_path)
 
     git.add(all: true)
-    git.commit('First commit')
+    git.commit("First commit")
 
     raise "Can't generate map" unless generate_map
   end
@@ -66,11 +66,11 @@ shared_context 'simple git repository' do
   def replace_spec_helper_config
     config = map_generator_config.to_s.chomp
     replace(spec_helper, /# MAP_GENERATOR_CONFIG/, config)
-    git.commit_all('Update spec helper')
+    git.commit_all("Update spec helper")
   end
 
   def replace(filepath, regexp, *args, &block)
     content = File.read(filepath).gsub(regexp, *args, &block)
-    File.open(filepath, 'wb') { |file| file.write(content) }
+    File.open(filepath, "wb") { |file| file.write(content) }
   end
 end

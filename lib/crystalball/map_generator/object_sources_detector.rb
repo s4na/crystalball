@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/helpers/path_filter'
-require 'crystalball/map_generator/object_sources_detector/hierarchy_fetcher'
-require 'crystalball/map_generator/object_sources_detector/definition_tracer'
+require "crystalball/map_generator/helpers/path_filter"
+require "crystalball/map_generator/object_sources_detector/hierarchy_fetcher"
+require "crystalball/map_generator/object_sources_detector/definition_tracer"
 
 module Crystalball
   class MapGenerator

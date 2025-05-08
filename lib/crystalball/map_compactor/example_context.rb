@@ -12,7 +12,7 @@ module Crystalball
 
       def parent
         @parent ||= begin
-          parent_uid = address.split(':')[0..-2].join(':')
+          parent_uid = address.split(":")[0..-2].join(":")
           parent_uid.empty? ? nil : self.class.new(parent_uid)
         end
       end
@@ -22,7 +22,7 @@ module Crystalball
       end
 
       def depth
-        @depth ||= address.split(':').size
+        @depth ||= address.split(":").size
       end
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/predictor/helpers/path_formatter'
+require "crystalball/predictor/helpers/path_formatter"
 
 module Crystalball
   class Predictor

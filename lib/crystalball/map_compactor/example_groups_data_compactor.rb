@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_compactor/example_context'
+require "crystalball/map_compactor/example_context"
 
 module Crystalball
   module MapCompactor
@@ -53,9 +53,9 @@ module Crystalball
       def extract_contexts(example_uids)
         result = []
         example_uids.each do |example_uid|
-          context_numbers = /\[(.*)\]/.match(example_uid)[1].split(':')
+          context_numbers = /\[(.*)\]/.match(example_uid)[1].split(":")
           until context_numbers.empty?
-            result << ExampleContext.new(context_numbers.join(':'))
+            result << ExampleContext.new(context_numbers.join(":"))
             context_numbers.pop
           end
         end

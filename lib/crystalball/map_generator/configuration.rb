@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/map_generator/strategies_collection'
+require "crystalball/map_generator/strategies_collection"
 
 module Crystalball
   class MapGenerator
@@ -27,7 +27,7 @@ module Crystalball
       end
 
       def map_storage_path
-        @map_storage_path ||= Pathname('tmp/crystalball_data.yml')
+        @map_storage_path ||= Pathname("tmp/crystalball_data.yml")
       end
 
       def map_storage_path=(value)

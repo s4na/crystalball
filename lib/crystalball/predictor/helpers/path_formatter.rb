@@ -10,7 +10,7 @@ module Crystalball
         end
 
         def format_path(path)
-          path.start_with?('./') ? path : "./#{path}"
+          path.start_with?("./") ? path : "./#{path}"
         end
       end
     end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../feature_helper'
+require_relative "../feature_helper"
 
-describe 'Changing and commiting a source file' do
-  include_context 'simple git repository'
-  include_context 'class1 examples'
-  include_context 'base forecast'
+describe "Changing and commiting a source file" do
+  include_context "simple git repository"
+  include_context "class1 examples"
+  include_context "base forecast"
 
   map_generator_config do
     <<~CONFIG
@@ -19,10 +19,10 @@ describe 'Changing and commiting a source file' do
     [Crystalball::Predictor::ModifiedExecutionPaths.new]
   end
 
-  it 'adds mapped examples to a prediction list' do
+  it "adds mapped examples to a prediction list" do
     change class1_path
     git.add class1_path.to_s
-    git.commit 'Second commit'
+    git.commit "Second commit"
 
     expect(forecast).to include_rspec_examples(*class1_examples)
   end

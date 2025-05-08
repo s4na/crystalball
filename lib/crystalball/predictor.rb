@@ -9,7 +9,7 @@ module Crystalball
     # @param [Crystalball::GitRepo] repo to build execution list on
     # @param [String] from starting commit for diff. Default: HEAD
     # @param [String] to ending commit for diff. Default: nil
-    def initialize(map, repo, from: 'HEAD', to: nil)
+    def initialize(map, repo, from: "HEAD", to: nil)
       @map = map
       @repo = repo
       @from = from
@@ -32,7 +32,7 @@ module Crystalball
 
     def diff
       @diff ||= begin
-                  ancestor = repo.merge_base(from, to || 'HEAD').sha
+                  ancestor = repo.merge_base(from, to || "HEAD").sha
                   repo.diff(ancestor, to)
                 end
     end
@@ -52,7 +52,7 @@ module Crystalball
     end
 
     def extract_file_path(example)
-      repo.repo_path.join(example.split('[').first).expand_path
+      repo.repo_path.join(example.split("[").first).expand_path
     end
   end
 end

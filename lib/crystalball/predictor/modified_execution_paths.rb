@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'crystalball/predictor/strategy'
-require 'crystalball/predictor/helpers/affected_example_groups_detector'
+require "crystalball/predictor/strategy"
+require "crystalball/predictor/helpers/affected_example_groups_detector"
 
 module Crystalball
   class Predictor

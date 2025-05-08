@@ -21,7 +21,11 @@ ActiveRecord::Schema.define(version: 20_180_321_094_057) do
     t.datetime "updated_at"
     t.integer "model1_id"
     t.integer "model2_id"
+    t.index ["model1_id"], name: "index_model1s_model2s_on_model1_id"
+    t.index ["model2_id"], name: "index_model1s_model2s_on_model2_id"
   end
 
-  add_foreign_key "model1s", "model2s", column: "model2_id"
+  # Move the foreign key to the join table where the model2_id column actually exists
+  add_foreign_key "model1s_model2s", "model1s", column: "model1_id"
+  add_foreign_key "model1s_model2s", "model2s", column: "model2_id"
 end

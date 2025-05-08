@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'crystalball/predictor/strategy'
+require "crystalball/predictor/strategy"
 
 module Crystalball
   class Predictor
