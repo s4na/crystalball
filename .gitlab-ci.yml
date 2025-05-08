@@ -23,7 +23,6 @@ default:
 
 variables:
   BUNDLE_PATH: vendor/bundle
-  BUNDLE_FROZEN: "true"
   BUNDLE_SILENCE_ROOT_WARNING: "true"
   GIT_STRATEGY: clone
 
@@ -40,6 +39,8 @@ stages:
 
 cache-gems:
   stage: .pre
+  variables:
+    BUNDLE_FROZEN: "true" # ensure lockfile is in a proper state
   script:
     - echo "Cached ruby gems"
   cache:
