@@ -1,3 +1,11 @@
+spec:
+  inputs:
+    semver:
+      description: The semantic version component to bump.
+      options: ['major', 'minor', 'patch']
+      default: 'minor'
+---
+
 .cache: &cache
   key:
     prefix: bundle
@@ -21,10 +29,12 @@ workflow:
   rules:
     - if: $CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "web"
+    - if: $CI_COMMIT_TAG
 
 stages:
-  - lint
   - test
+  - release
 
 cache-gems:
   stage: .pre
@@ -35,12 +45,45 @@ cache-gems:
     policy: pull-push
 
 rubocop:
-  stage: lint
   script:
     - bundle exec rubocop --color
 
 rspec:
-  stage: test
   script:
     - bundle exec rspec --force-color spec
   coverage: '/Line Coverage: (\d+\.\d+%) \(.*\)$/'
+
+bump-version:
+  stage: release
+  script:
+    - bundle exec rake bump_version[$[[ inputs.semver ]]]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
+
+# This job requires GEM_HOST_API_KEY variable to be set
+release-gem:
+  stage: release
+  script:
+    - bundle exec rake release
+  rules:
+    - if: $CI_COMMIT_TAG
+
+# This job requires VERSION_UPDATE_TOKEN variable to be set
+changelog:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:v0.23.0
+  needs: [release-gem]
+  variables:
+    CHANGELOG_FILE: CHANGELOG.md
+  before_script:
+    - apk add jq curl
+  script:
+    - |
+      [ -n "$VERSION_UPDATE_TOKEN" ] || echo "VERSION_UPDATE_TOKEN environment missing, token with api access required!"; exit 1
+      uri="$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
+      curl --silent --header "PRIVATE-TOKEN: ${VERSION_UPDATE_TOKEN}" $uri | jq -r '.notes' > $CHANGELOG_FILE
+  release:
+    tag_name: $CI_COMMIT_TAG
+    description: $CHANGELOG_FILE
+  rules:
+    - if: $CI_COMMIT_TAG

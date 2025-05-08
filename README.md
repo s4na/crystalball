@@ -1,10 +1,10 @@
 # Crystalball
 
-Crystalball is a Ruby library which implements [Regression Test Selection mechanism](https://tenderlovemaking.com/2015/02/13/predicting-test-failues.html) originally published by Aaron Patterson.
-Its main purpose is to select a minimal subset of your test suite which should be run to ensure your changes didn't break anything.
-
 ![Build Status](https://gitlab.com/acunskis/crystalball/badges/main/pipeline.svg)
 ![Test Coverage](https://gitlab.com/acunskis/crystalball/badges/main/coverage.svg?job=rspec)
+
+Crystalball is a Ruby library which implements [Regression Test Selection mechanism](https://tenderlovemaking.com/2015/02/13/predicting-test-failues.html) originally published by Aaron Patterson.
+Its main purpose is to select a minimal subset of your test suite which should be run to ensure your changes didn't break anything.
 
 ## Installation
 
@@ -30,7 +30,7 @@ Or install it yourself as:
 
 ## Usage
 
-Please see our [official documentation](https://gitlab.com/acunskis/crystalball).
+Please see our [official documentation](https://gitlab.com/acunskis/crystalball/-/blob/main/docs/index.md).
 
 ### Versioning
 
@@ -41,6 +41,10 @@ We use [semantic versioning](https://semver.org/) for our [releases](https://git
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 To install this gem onto your local machine, run `bundle exec rake install`.
+
+### Release
+
+In order to release new version, manual pipeline should be triggered via Gitlab UI and version component input should be set according to [semver versioning](#versioning) strategy. Pipeline will then automatically bump version, push updated files and release tag and build and push gem to <rubygems.org>.
 
 ## Contributing
 
