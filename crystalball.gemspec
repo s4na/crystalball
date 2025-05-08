@@ -41,9 +41,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "i18n", "~> 1.14.7"
   spec.add_development_dependency "parser", "~> 3.3.8.0"
   spec.add_development_dependency "pry", "~> 0.15.2"
+  spec.add_development_dependency "rake", "~> 13.2"
   spec.add_development_dependency "rspec", "~> 3.13.0"
+  spec.add_development_dependency "semver2", "~> 3.4"
   spec.add_development_dependency "simplecov", "~> 0.22.0"
-  spec.add_development_dependency "solargraph", "~> 0.54.2"
   spec.add_development_dependency "sqlite3", "~> 2.6.0"
   spec.add_development_dependency "yard", "~> 0.9.37"
 end

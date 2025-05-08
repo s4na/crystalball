@@ -1,0 +1,23 @@
+---
+categories:
+  breaking: "💥 Breaking changes"
+  feature: "🚀 New features"
+  improvement: "🔬 Improvements"
+  fix: "🐞 Bug Fixes"
+  dependency: "📦 Dependency updates"
+  maintenance: "🧰 Maintenance"
+template: |
+  {% if categories %}
+  {% each categories %}
+  ### {{ title }} ({% if single_change %}1 change{% else %}{{ count }} changes{% end %})
+
+  {% each entries %}
+  - [{{ title }}]({{ commit.reference }}) by {{ author.reference }}.\
+  {% if merge_request %} See merge request {{ merge_request.reference }}{% end %}
+
+  {% end %}
+
+  {% end %}
+  {% else %}
+  No changes.
+  {% end %}
