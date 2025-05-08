@@ -85,12 +85,10 @@ changelog:
   image: registry.gitlab.com/gitlab-org/release-cli:v0.23.0
   variables:
     CHANGELOG_FILE: CHANGELOG.md
-  before_script:
-    - apk add jq curl
+    GITLAB_TOKEN: $VERSION_UPDATE_TOKEN
+  before_script: []
   script:
-    - |
-      uri="$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
-      curl -sS --header "PRIVATE-TOKEN: ${VERSION_UPDATE_TOKEN}" $uri | jq -r '.notes' > $CHANGELOG_FILE
+    - glab changelog generate --version $CI_COMMIT_TAG > $CHANGELOG_FILE
   release:
     tag_name: $CI_COMMIT_TAG
     description: $CHANGELOG_FILE
