@@ -91,7 +91,7 @@ changelog:
     - |
       [ -n "$VERSION_UPDATE_TOKEN" ] || echo "VERSION_UPDATE_TOKEN environment missing, token with api access required!"; exit 1
       uri="$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"
-      curl --silent --header "PRIVATE-TOKEN: ${VERSION_UPDATE_TOKEN}" $uri | jq -r '.notes' > $CHANGELOG_FILE
+      curl -sS --header "PRIVATE-TOKEN: ${VERSION_UPDATE_TOKEN}" $uri | jq -r '.notes' > $CHANGELOG_FILE
   release:
     tag_name: $CI_COMMIT_TAG
     description: $CHANGELOG_FILE
