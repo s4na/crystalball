@@ -5,6 +5,7 @@ require "crystalball/map_generator/parser_strategy"
 
 RSpec.describe Crystalball::MapGenerator::ParserStrategy do
   subject(:strategy) { described_class.new(root, pattern: pattern) }
+
   let(:pattern) { // }
   let(:processor) { instance_double(Crystalball::MapGenerator::ParserStrategy::Processor) }
   let(:root) { "foo/bar" }

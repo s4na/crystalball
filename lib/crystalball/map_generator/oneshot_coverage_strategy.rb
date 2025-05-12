@@ -2,22 +2,18 @@
 
 require "coverage"
 require "crystalball/map_generator/base_strategy"
-require "crystalball/map_generator/coverage_strategy/execution_detector"
+
+require_relative "helpers/path_filter"
 
 module Crystalball
   class MapGenerator
     # Map generator strategy based on harvesting Coverage information during example execution
-    class CoverageStrategy
+    class OneshotCoverageStrategy
       include BaseStrategy
-
-      attr_reader :execution_detector
-
-      def initialize(execution_detector: ExecutionDetector.new)
-        @execution_detector = execution_detector
-      end
+      include Helpers::PathFilter
 
       def after_register
-        Coverage.start(lines: true) unless Coverage.running?
+        raise "Coverage must not be started for oneshot_line strategy" if Coverage.running?
       end
 
       # Adds to the example_map's used files the ones the ones in which
@@ -25,10 +21,10 @@ module Crystalball
       # @param [Crystalball::ExampleGroupMap] example_map - object holding example metadata and used files
       # @param [RSpec::Core::Example] example - a RSpec example
       def call(example_map, example)
-        before = Coverage.peek_result
+        Coverage.start(oneshot_lines: true)
         yield example_map, example
-        after = Coverage.peek_result
-        example_map.push(*execution_detector.detect(before, after))
+        paths = Coverage.result.keys
+        example_map.push(*filter(paths))
       end
     end
   end
