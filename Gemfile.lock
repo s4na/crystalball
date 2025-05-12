@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gitlab-crystalball (0.7.2)
+    gitlab-crystalball (0.8.0)
       git (< 4)
 
 GEM
