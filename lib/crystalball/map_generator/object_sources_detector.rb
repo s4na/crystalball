@@ -13,11 +13,12 @@ module Crystalball
       attr_reader :definition_tracer, :hierarchy_fetcher
 
       def initialize(
-        root_path:,
+        root_path: Dir.pwd,
         definition_tracer: DefinitionTracer.new(root_path),
-        hierarchy_fetcher: HierarchyFetcher.new
+        hierarchy_fetcher: HierarchyFetcher.new,
+        exclude_prefixes: []
       )
-        super(root_path)
+        super(root_path, exclude_prefixes: exclude_prefixes)
 
         @definition_tracer = definition_tracer
         @hierarchy_fetcher = hierarchy_fetcher

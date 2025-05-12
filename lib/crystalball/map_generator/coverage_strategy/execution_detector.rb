@@ -8,6 +8,7 @@ module Crystalball
       # Class for detecting code execution path based on coverage information diff
       class ExecutionDetector
         include ::Crystalball::MapGenerator::Helpers::PathFilter
+
         # Detects files affected during example execution. Transforms absolute paths to relative.
         # Exclude paths outside of repository
         #
@@ -15,7 +16,15 @@ module Crystalball
         # @param[Array<String>] list of files affected after example execution
         # @return [Array<String>]
         def detect(before, after)
-          filter after.reject { |file_name, after_coverage| before[file_name] == after_coverage }.keys
+          after.filter_map do |file, coverage|
+            before_cov = before[file]&.fetch(:lines, [])
+            next if before_cov == coverage[:lines]
+
+            path = valid_path(file)
+            next unless path
+
+            path
+          end
         end
       end
     end

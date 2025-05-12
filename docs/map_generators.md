@@ -28,6 +28,19 @@ end
 
 By default, the execution detector is a `Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector`, which filters out the paths outside of the project root and converts absolute paths to relative.
 
+### OneshotCoverageStrategy
+
+This coverage strategy generation uses more performant `oneshot_line` method of coverage tracking. This method is not compatible with an already running coverage process as it requires starting and clearing coverage between each test. By default it filters all paths outside of root folder and additionally accepts array of prefixes to filter out:
+
+```ruby
+Crystalball::MapGenerator.start! do |config|
+  #...
+  config.register Crystalball::MapGenerator::OneshotCoverageStrategy.new(exclude_prefixes: %w[vendor/ruby])
+end
+```
+
+By default, the execution detector is a `Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector`, which filters out the paths outside of the project root and converts absolute paths to relative.
+
 ### AllocatedObjectsStrategy
 
 Looks for the files in which the objects allocated during the spec execution are defined. It is considerably slower than `CoverageStrategy`.
