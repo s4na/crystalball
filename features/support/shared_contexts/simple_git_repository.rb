@@ -48,7 +48,7 @@ shared_context "simple git repository" do
   end
 
   def delete(file_path)
-    git.lib.remove file_path
+    git.lib.rm file_path
   end
 
   def move(file_path)

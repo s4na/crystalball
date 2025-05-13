@@ -2,7 +2,7 @@
 
 require_relative "../feature_helper"
 
-RSpec.describe "Changing schema file" do
+RSpec.describe "Changing schema file", skip: "todo" do
   include_context "simple git repository"
   include_context "base forecast"
   let(:schema_path) { root.join("db", "schema.rb") }

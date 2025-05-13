@@ -10,7 +10,7 @@ describe "Changing source file" do
     [Crystalball::Predictor::ModifiedExecutionPaths.new]
   end
 
-  context "when dealing with factories" do
+  context "when dealing with factories", skip: "implementation does not work with latest factory_bot version" do
     map_generator_config do
       <<~CONFIG
         Crystalball::MapGenerator.start! do |c|

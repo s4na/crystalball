@@ -10,7 +10,7 @@ describe "Changing source file" do
     [Crystalball::Predictor::ModifiedExecutionPaths.new]
   end
 
-  context "when dealing with locales" do
+  context "when dealing with locales", skip: "i18 strategy patch is not compatible with latest library versions" do
     let(:locales_path) { root.join("locales") }
     let(:name_locale_path) { locales_path.join("name.yml") }
     let(:value_locale_path) { locales_path.join("value.yml") }

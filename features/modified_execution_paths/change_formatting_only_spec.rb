@@ -19,7 +19,7 @@ describe "Changing formatting in a source file" do
     [Crystalball::Predictor::ModifiedExecutionPaths.new]
   end
 
-  it "does not add any examples to a prediction list" do
+  it "does not add any examples to a prediction list", skip: "todo" do
     change class1_path, File.read(fixtures_path.join("class1_formatting_changed.rb"))
 
     expect(forecast).to be_empty

@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-describe "show.html.erb" do
+describe "show" do
   include_context "action view"
-  let(:assigns) { {model: Model1.new(field: "foo")} }
+  let(:assigns) { { model: Model1.new(field: "foo") } }
 
   it { is_expected.to include "foo" }
 end
