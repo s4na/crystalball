@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "A library for RSpec regression test selection"
   spec.description   = "Provides simple way to integrate regression test selection approach to your RSpec test suite"
 
-  homepage           = "https://gitlab-org/ruby/gems/crystalball"
+  homepage           = "https://gitlab.com/gitlab-org/ruby/gems/crystalball"
   spec.homepage      = homepage
 
   spec.metadata = {
