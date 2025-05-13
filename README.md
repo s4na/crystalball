@@ -1,7 +1,7 @@
 # Crystalball
 
 ![Build Status](https://gitlab.com/gitlab-org/ruby/gems/crystalball/badges/main/pipeline.svg)
-![Test Coverage](https://gitlab.com/gitlab-org/ruby/gems/crystalball/badges/main/coverage.svg?job=rspec)
+![Test Coverage](https://gitlab.com/gitlab-org/ruby/gems/crystalball/badges/main/coverage.svg?job=rspec%20spec)
 
 Crystalball is a Ruby library which implements [Regression Test Selection mechanism](https://tenderlovemaking.com/2015/02/13/predicting-test-failues.html) originally published by Aaron Patterson.
 Its main purpose is to select a minimal subset of your test suite which should be run to ensure your changes didn't break anything.
