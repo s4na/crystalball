@@ -33,6 +33,7 @@ describe Crystalball::MapGenerator::OneshotCoverageStrategy do
 
   describe "#call" do
     let(:example_group_map) { [] }
+    let(:example) { instance_double(RSpec::Core::Example, id: "example_group.example_id") }
 
     before do
       allow(Coverage).to receive(:start).with(oneshot_lines: true)
@@ -41,7 +42,7 @@ describe Crystalball::MapGenerator::OneshotCoverageStrategy do
 
     it "pushes used files detected by detector to example group map" do
       expect do
-        generator.call(example_group_map, "example") do
+        generator.call(example_group_map, example) do
           # empty block called by generator implementation
         end
       end.to change { example_group_map }.to %w[file_1 file_2]
@@ -49,8 +50,8 @@ describe Crystalball::MapGenerator::OneshotCoverageStrategy do
 
     it "yields example_group_map to a block" do
       expect do |b|
-        generator.call(example_group_map, "example", &b)
-      end.to yield_with_args(example_group_map, "example")
+        generator.call(example_group_map, example, &b)
+      end.to yield_with_args(example_group_map, example)
     end
   end
 end

@@ -24,14 +24,16 @@ module Crystalball
       def call(example_map, example)
         start_coverage
         yield example_map, example
-        paths = Coverage.result.keys
-        example_map.push(*filter(paths))
+        paths = filter(Coverage.result(stop: true, clear: true).keys)
+        log(:debug, "[Crystalball] #{example.id} recorded #{paths.size} files")
+        example_map.push(*paths)
       end
 
       # Start coverage or restart it if it was already started
       #
       # @return [void] <description>
       def start_coverage
+        log(:debug, "[Crystalball] Starting oneshot_line coverage capture")
         Coverage.start(oneshot_lines: true) unless Coverage.running?
 
         log(:warn, "[Crystalball] Coverage has been already started, restarting coverage for oneshot_lines!")
