@@ -34,7 +34,7 @@ module Crystalball
       # @return [void] <description>
       def start_coverage
         log(:debug, "[Crystalball] Starting oneshot_line coverage capture")
-        Coverage.start(oneshot_lines: true) unless Coverage.running?
+        return Coverage.start(oneshot_lines: true) unless Coverage.running?
 
         log(:warn, "[Crystalball] Coverage has been already started, restarting coverage for oneshot_lines!")
         Coverage.result(stop: true, clear: true)
