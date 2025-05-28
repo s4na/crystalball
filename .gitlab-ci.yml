@@ -57,16 +57,11 @@ rubocop:
   script:
     - bundle exec rubocop --color
 
-rspec spec:
+rspec:
   extends: .default-workflow
   script:
     - bundle exec rspec --force-color spec
   coverage: '/Line Coverage: (\d+\.\d+%) \(.*\)$/'
-
-rspec features:
-  extends: .default-workflow
-  script:
-    - bundle exec rspec --force-color features
 
 bump-version:
   stage: release

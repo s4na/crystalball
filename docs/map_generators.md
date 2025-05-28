@@ -41,29 +41,6 @@ end
 
 By default, the execution detector is a `Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector`, which filters out the paths outside of the project root and converts absolute paths to relative.
 
-### AllocatedObjectsStrategy
-
-Looks for the files in which the objects allocated during the spec execution are defined. It is considerably slower than `CoverageStrategy`.
-To use this strategy, use the convenient method `.build` which takes two optional keyword arguments: `only`, used to define the classes or modules to have their descendants tracked (defaults to `[]`); and `root`, which is the path where the detection will take place (defaults to `Dir.pwd`).
-Here's an example that tracks allocation of `ActiveRecord::Base` objects:
-
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::AllocatedObjectsStrategy.build(only: ['ActiveRecord::Base'])
-end
-```
-
-That method is fine for most uses, but if you need to further customize the behavior of the strategy, you can directly instantiate the class.
-
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::AllocatedObjectsStrategy
-    .new(execution_detector: my_detector, object_tracker: my_tracker)
-end
-```
-
 The initialization takes two keyword arguments: `execution_detector` and `object_tracker`.
 `execution_detector` must be an object that responds to `#detect` receiving a list of objects and returning the paths affected by said objects. `object_tracker` is something that responds to `#used_classes_during` which yields to the caller and returns the array of classes of objects allocated during the execution of the block.
 
@@ -89,22 +66,6 @@ Crystalball::MapGenerator.start! do |config|
 end
 ```
 
-### ParserStrategy
-
-The `ParserStrategy`, as the name suggests parses the files in order to detect which files are affected by an example.
-It works by first parsing all (`.rb`) files that match the given pattern under the configured root directory (defaults to current directory) to collect the constants definition paths.
-Then, when each example is executed, the used files of the current example group map are parsed to check for method calls to those constants. For that reason, `ParserStrategy` **only works when used with other strategies and is placed at the end of the strategies list**.
-
-To use it, add the `parser` gem to your `Gemfile` and:
-
-```ruby
-require 'crystalball/map_generator/parser_strategy'
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::ParserStrategy.new(pattern: /\A(app)|(lib)/)
-end
-```
-
 ### ActionViewStrategy
 
 To use Rails specific strategies you must first `require 'crystalball/rails'`.
@@ -115,30 +76,6 @@ Crystalball::MapGenerator.start! do |config|
   #...
   config.register Crystalball::MapGenerator::ActionViewStrategy.new
 end 
-```
-
-### I18nStrategy
-
-To use Rails specific strategies you must first `require 'crystalball/rails'`.
-Patches I18n to have access to the path where the locales are defined, so that those paths can be added to the example group map.
-To use it, add to your config:
-
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::I18nStrategy.new
-end
-```
-
-### FactoryBotStrategy
-
-Tracks which factories were used during the example and add files with corresponding definitions to the example group map.
-To use it, add to your config:
-```ruby
-Crystalball::MapGenerator.start! do |config|
-  #...
-  config.register Crystalball::MapGenerator::FactoryBotStrategy.new
-end
 ```
 
 ### Custom strategies
@@ -170,5 +107,3 @@ Crystalball::TablesMapGenerator.start! do |config|
   config.map_storage_path = 'my_custom_tables_map_name.yml'
 end
 ```
-
-
