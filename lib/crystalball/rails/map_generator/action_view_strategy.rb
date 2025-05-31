@@ -33,12 +33,23 @@ module Crystalball
           Patch.revert!
         end
 
-        # Adds views related to the spec to the example group map
-        # @param [Crystalball::ExampleGroupMap] example_group_map - object holding example metadata and used files
-        def call(example_group_map, _)
+        # Reset affected views before test execution starts
+        #
+        # @param _example [RSpec::Core::Example, RSpec::Core::ExampleGroup]
+        # @return [void]
+        def run_before(_example)
           self.class.reset_views
-          yield example_group_map
-          example_group_map.push(*filter(self.class.views))
+        end
+
+        # Adds views related to the spec to the example group map
+        #
+        # @param [Crystalball::ExampleGroupMap] example_group_map - object holding example metadata and used files
+        # @return [void]
+        def run_after(example_group_map, example)
+          log_debug("Recording mappings for example id: #{example.id}")
+          mappings = filter(self.class.views)
+          log_debug("#{example.id} recorded #{mappings.size} files")
+          example_group_map.push(*mappings)
         end
       end
     end

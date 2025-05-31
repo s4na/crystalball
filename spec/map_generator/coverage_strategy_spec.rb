@@ -6,6 +6,7 @@ describe Crystalball::MapGenerator::CoverageStrategy do
   subject(:generator) { described_class.new(execution_detector: execution_detector) }
 
   let(:execution_detector) { instance_double(Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector) }
+  let(:rspec_example) { instance_double(RSpec::Core::Example, id: "test-id:[1]") }
 
   include_examples "base strategy"
 
@@ -29,7 +30,7 @@ describe Crystalball::MapGenerator::CoverageStrategy do
     end
   end
 
-  describe "#call" do
+  describe "#run_after" do
     let(:example_group_map) { [] }
 
     before do
@@ -42,16 +43,9 @@ describe Crystalball::MapGenerator::CoverageStrategy do
 
     it "pushes used files detected by detector to example group map" do
       expect do
-        generator.call(example_group_map, "example") do
-          # empty block called by generator implementation
-        end
+        generator.run_before(rspec_example)
+        generator.run_after(example_group_map, rspec_example)
       end.to change { example_group_map }.to [1, 2, 3]
-    end
-
-    it "yields example_group_map to a block" do
-      expect do |b|
-        generator.call(example_group_map, "example", &b)
-      end.to yield_with_args(example_group_map, "example")
     end
   end
 end

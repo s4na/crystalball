@@ -3,8 +3,9 @@
 module Crystalball
   # Data object to store execution map for specific example
   class ExampleGroupMap
-    attr_reader :uid, :file_path, :used_files
     extend Forwardable
+
+    attr_reader :uid, :file_path, :used_files
 
     delegate %i[push each] => :used_files
 

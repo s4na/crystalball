@@ -10,11 +10,24 @@ module Crystalball
         @strategies = strategies
       end
 
-      # Calls every strategy on the given example group map and returns the modified example group map
-      # @param [Crystalball::ExampleGroupMap] example_group_map - initial example group map
-      # @return [Crystalball::ExampleGroupMap] example group map augmented by each strategy
-      def run(example_group_map, example, &block)
-        run_for_strategies(example_group_map, example, *_strategies.reverse, &block)
+      # Run before hook action for example or example group
+      #
+      # @param example [RSpec::Core::Example]
+      # @return [void]
+      def run_before(example)
+        _strategies.reverse_each { |strategy| strategy.run_before(example) }
+      end
+
+      # Run after hook action for example or example group and update example group map
+      #
+      # @param example_group_map [ExampleGroupMap]
+      # @param example [RSpec::Core::Example]
+      # @return [ExampleGroupMap]
+      def run_after(example_group_map, example)
+        _strategies.reverse_each do |strategy|
+          strategy.run_after(example_group_map, example)
+        end
+
         example_group_map
       end
 
@@ -30,13 +43,6 @@ module Crystalball
 
       def _strategies
         @strategies
-      end
-
-      def run_for_strategies(example_group_map, example, *strats, &block)
-        return yield(example_group_map) if strats.empty?
-
-        strat = strats.shift
-        strat.call(example_group_map, example) { |c| run_for_strategies(c, example, *strats, &block) }
       end
     end
   end

@@ -27,23 +27,18 @@ describe Crystalball::Rails::MapGenerator::ActionViewStrategy do
 
   describe "#call" do
     let(:example_group_map) { [] }
+    let(:rspec_example) { instance_double(RSpec::Core::Example, id: "test-id:[1]") }
 
-    it "pushes used files to example group map" do
+    before do
       allow(strategy).to receive(:filter).with(["view"]).and_return([1, 2, 3])
-
-      expect do
-        subject.call(example_group_map, "example") do
-          Crystalball::Rails::MapGenerator::ActionViewStrategy.views.push "view"
-        end
-      end.to change { example_group_map }.to [1, 2, 3]
     end
 
-    it "yields example_group_map to a block" do
-      allow(strategy).to receive(:filter).with([]).and_return([])
+    it "pushes used files to example group map" do
+      strategy.run_before(rspec_example)
 
-      expect do |b|
-        subject.call(example_group_map, "example", &b)
-      end.to yield_with_args(example_group_map)
+      described_class.views.push "view"
+
+      expect { strategy.run_after(example_group_map, rspec_example) }.to change { example_group_map }.to [1, 2, 3]
     end
   end
 end

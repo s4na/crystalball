@@ -7,15 +7,14 @@ module Crystalball
     # Configuration of map generator. Is can be accessed as a first argument inside
     # `Crystalball::MapGenerator.start! { |config| config } block.
     class Configuration
-      attr_writer :map_storage
-      attr_writer :map_class
+      attr_writer :map_storage, :map_class
       attr_accessor :commit, :version, :compact_map
-
-      attr_reader :strategies
+      attr_reader :strategies, :hook_type
 
       def initialize
         @strategies = StrategiesCollection.new
         @compact_map = true
+        @hook_type = :example
       end
 
       def compact_map?
@@ -44,6 +43,13 @@ module Crystalball
 
       def dump_threshold=(value)
         @dump_threshold = value.to_i
+      end
+
+      def hook_type=(type)
+        valid_types = %i[example context]
+        raise ArgumentError, "hook type should be one of #{valid_types}" unless valid_types.include?(type)
+
+        @hook_type = type
       end
 
       # Register new strategy for map generation

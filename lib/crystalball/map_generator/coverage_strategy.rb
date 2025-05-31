@@ -14,22 +14,33 @@ module Crystalball
 
       def initialize(execution_detector: ExecutionDetector.new)
         @execution_detector = execution_detector
+        @before_coverage = nil
       end
 
       def after_register
-        Coverage.start(lines: true) unless Coverage.running?
+        return if Coverage.running?
+
+        log_debug("Starting coverage capture")
+        Coverage.start(lines: true)
       end
 
-      # Adds to the example_map's used files the ones the ones in which
-      # the coverage has changed after the tests runs.
-      # @param [Crystalball::ExampleGroupMap] example_map - object holding example metadata and used files
-      # @param [RSpec::Core::Example] example - a RSpec example
-      def call(example_map, example)
-        before = Coverage.peek_result
-        yield example_map, example
-        after = Coverage.peek_result
-        example_map.push(*execution_detector.detect(before, after))
+      def run_before(example)
+        log_debug("Fetching current coverage state before execution of example id: #{example.id}")
+        @before_coverage = Coverage.peek_result
       end
+
+      def run_after(example_map, example)
+        log_debug("Recording mappings for example id: #{example.id}")
+        mappings = execution_detector.detect(before_coverage, Coverage.peek_result)
+        log_debug("#{example.id} recorded #{mappings.size} files")
+        example_map.push(*mappings)
+      ensure
+        @before_coverage = nil
+      end
+
+      private
+
+      attr_reader :before_coverage
     end
   end
 end
