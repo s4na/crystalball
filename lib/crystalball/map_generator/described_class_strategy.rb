@@ -9,6 +9,7 @@ module Crystalball
     # ancestors.
     class DescribedClassStrategy
       include BaseStrategy
+
       extend Forwardable
 
       attr_reader :execution_detector
@@ -21,14 +22,21 @@ module Crystalball
         @execution_detector = execution_detector
       end
 
+      def run_before(_example); end
+
       # @param [Crystalball::ExampleGroupMap] example_map - object holding example metadata and used files
       # @param [RSpec::Core::Example] example - a RSpec example
-      def call(example_map, example)
-        yield example_map, example
-
+      def run_after(example_map, example)
+        log_debug("Recording mappings for example id: #{example.id}")
         described_class = example.metadata[:described_class]
 
-        example_map.push(*execution_detector.detect([described_class])) if described_class
+        if described_class
+          mappings = execution_detector.detect([described_class])
+          log_debug("#{example.id} recorded #{mappings.size} files")
+          example_map.push(*mappings)
+        else
+          log_debug("#{example.id} did not record any mappings because it has no described_class")
+        end
       end
     end
   end

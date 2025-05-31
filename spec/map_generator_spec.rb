@@ -3,40 +3,83 @@
 require "spec_helper"
 
 describe Crystalball::MapGenerator do
-  let(:storage) { instance_double("Crystalball::MapStorage::YAMLStorage", clear!: true, dump: true) }
-  let(:detector) { instance_double("Crystalball::ExecutionDetector") }
+  let(:storage) { instance_double(Crystalball::MapStorage::YAMLStorage, clear!: true, dump: true) }
+  let(:detector) { instance_double(Crystalball::ExecutionDetector) }
   let(:threshold) { 0 }
   let(:map_class) { configuration.map_class }
   let(:configuration) { generator.configuration }
 
   describe ".start" do
-    subject { described_class.start! }
+    subject(:start_generator) { described_class.start! }
 
     let(:generator) { described_class.new }
     let(:rspec_configuration) { spy }
 
+    let(:rspec_example) do
+      Struct.new.new
+    end
+
     before do
       allow(Coverage).to receive(:start)
-      allow(described_class).to receive(:new).and_return(generator)
       allow(::RSpec).to receive(:configure).and_yield(rspec_configuration)
+
+      allow(described_class).to receive(:new).and_return(generator)
+      allow(generator).to receive_messages({
+        start!: true,
+        finalize!: true,
+        execute_before: true,
+        execute_after: true
+      })
+
+      allow(rspec_configuration).to receive(:before).with(:suite).and_yield
+      allow(rspec_configuration).to receive(:after).with(:suite).and_yield
+      allow(rspec_configuration).to receive(:prepend_before).with(:example).and_yield(rspec_example)
+      allow(rspec_configuration).to receive(:append_after).with(:example).and_yield(rspec_example)
     end
 
     it "sets before suite callback" do
-      expect(generator).to receive(:start!)
-      expect(rspec_configuration).to receive(:before).with(:suite).and_yield
-      subject
-    end
+      start_generator
 
-    it "sets around example callback" do
-      expect(generator).to receive(:refresh_for_case).with(example = double)
-      expect(rspec_configuration).to receive(:around).with(:each).and_yield(example)
-      subject
+      expect(generator).to have_received(:start!)
     end
 
     it "sets after suite callback" do
-      expect(generator).to receive(:finalize!)
-      expect(rspec_configuration).to receive(:after).with(:suite).and_yield
-      subject
+      start_generator
+
+      expect(generator).to have_received(:finalize!)
+    end
+
+    context "with :example hook type" do
+      it "sets before example callback" do
+        start_generator
+
+        expect(generator).to have_received(:execute_before).with(rspec_example)
+      end
+
+      it "sets after example callback" do
+        start_generator
+
+        expect(generator).to have_received(:execute_after).with(rspec_example)
+      end
+    end
+
+    context "with :context hook type" do
+      before do
+        allow(rspec_configuration).to receive(:prepend_before).with(:context).and_yield(rspec_example)
+        allow(rspec_configuration).to receive(:append_after).with(:context).and_yield(rspec_example)
+      end
+
+      it "sets before example callback" do
+        start_generator
+
+        expect(generator).to have_received(:execute_before).with(rspec_example.class)
+      end
+
+      it "sets after example callback" do
+        start_generator
+
+        expect(generator).to have_received(:execute_after).with(rspec_example.class)
+      end
     end
   end
 
@@ -152,53 +195,63 @@ describe Crystalball::MapGenerator do
       end
     end
 
-    describe "#refresh_for_case" do
+    describe "#execute_before" do
       def rspec_example(id = "1")
-        double(run: true, id: id, file_path: "1.rb")
+        instance_double(RSpec::Core::Example, id: "test:[#{id}]", file_path: "test_1.rb")
       end
 
       def example_map(uid)
-        instance_double("Crystalball::ExampleGroupMap", uid: uid, used_files: [])
+        instance_double(Crystalball::ExampleGroupMap, uid: uid, used_files: ["test_1.rb"])
       end
 
       it "runs the example" do
-        allow(configuration.strategies).to receive(:run).and_call_original
+        allow(configuration.strategies).to receive(:run_before).and_call_original
         ex = rspec_example
-        expect(ex).to receive(:run)
-        subject.refresh_for_case(ex)
+        generator.execute_before(ex)
+
+        expect(configuration.strategies).to have_received(:run_before).with(ex)
       end
 
       it "adds execution map for given case" do
         rspec_case = rspec_example
-        allow(configuration.strategies).to receive(:run).with(kind_of(Crystalball::ExampleGroupMap), rspec_case)
-                                                        .and_return(example_map("1"))
-        expect do
-          subject.refresh_for_case(rspec_case)
-        end.to change { subject.map.size }.by(1)
+        allow(configuration.strategies).to receive(:run_after)
+          .with(kind_of(Crystalball::ExampleGroupMap), rspec_case)
+          .and_return(example_map("1"))
+
+        expect { generator.execute_after(rspec_case) }.to change { generator.map.size }.by(1)
       end
 
       context "with threshold" do
         let(:threshold) { 2 }
 
-        it "dumps map example_groups and clears the map if map size is over threshold" do
-          allow(configuration.strategies).to receive(:run).with(kind_of(Crystalball::ExampleGroupMap), any_args)
-                                                          .and_return(example_map("1"), example_map("2"), example_map("3"))
+        before do
+          allow(storage).to receive(:dump).with({ "1" => ["test_1.rb"], "2" => ["test_1.rb"] }).once
+          allow_any_instance_of(map_class).to receive(:clear!).and_call_original
 
-          expect(storage).to receive(:dump).with({ "1" => [], "2" => [] }).once
-          expect_any_instance_of(map_class).to receive(:clear!).once.and_call_original
-          subject.refresh_for_case(rspec_example("1"))
-          subject.refresh_for_case(rspec_example("2"))
-          subject.refresh_for_case(rspec_example("3"))
+          allow(configuration.strategies).to receive(:run_after)
+            .with(kind_of(Crystalball::ExampleGroupMap), any_args)
+            .and_return(example_map("1"), example_map("2"), example_map("3"))
+        end
+
+        it "dumps map example_groups and clears the map if map size is over threshold" do
+          generator.execute_after(rspec_example("1"))
+          generator.execute_after(rspec_example("2"))
+          generator.execute_after(rspec_example("3"))
+
+          expect(storage).to have_received(:dump).with({ "1" => ["test_1.rb"], "2" => ["test_1.rb"] }).once
         end
 
         context "with compacting" do
-          before { configuration.compact_map = true }
+          before do
+            configuration.compact_map = true
+          end
 
           it "does nothing" do
-            expect(storage).not_to receive(:dump)
-            subject.refresh_for_case(rspec_example("1"))
-            subject.refresh_for_case(rspec_example("2"))
-            subject.refresh_for_case(rspec_example("3"))
+            generator.execute_after(rspec_example("1"))
+            generator.execute_after(rspec_example("2"))
+            generator.execute_after(rspec_example("3"))
+
+            expect(storage).not_to have_received(:dump)
           end
         end
       end

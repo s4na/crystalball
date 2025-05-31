@@ -27,3 +27,7 @@ Rails:
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10
+  AllowSubject: true

@@ -20,7 +20,7 @@ module Crystalball
       end
 
       def to_h
-        {type: type, commit: commit, timestamp: timestamp, version: version}
+        { type: type, commit: commit, timestamp: timestamp, version: version }
       end
     end
 
