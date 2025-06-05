@@ -2,6 +2,8 @@
 
 require "bundler/setup"
 require "simplecov"
+require "climate_control"
+
 SimpleCov.start
 SimpleCov.add_filter "bundle/"
 SimpleCov.add_filter "spec/support/shared_contexts/"

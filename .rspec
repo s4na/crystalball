@@ -1,3 +1,4 @@
 --format documentation
 --color
 --exclude-pattern "features/fixtures/**/*_spec.rb"
+--order random
