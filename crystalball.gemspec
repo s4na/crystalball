@@ -37,6 +37,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "actionview", "~> 8.0.2"
   spec.add_development_dependency "activerecord", "~> 8.0.2"
+  spec.add_development_dependency "climate_control", "~> 1.2.0"
   spec.add_development_dependency "factory_bot", "~> 6.5.1"
   spec.add_development_dependency "gitlab-styles", "~> 13.1.0"
   spec.add_development_dependency "i18n", "~> 1.14.7"

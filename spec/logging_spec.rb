@@ -3,25 +3,25 @@
 require "spec_helper"
 
 RSpec.describe "Logger" do
+  let!(:stdout_logger) { ::Logger.new(output_stream) }
+  let!(:file_logger) { ::Logger.new(log_file_output_stream) }
+
   let(:output_stream) { StringIO.new }
   let(:log_file_output_stream) { StringIO.new }
   let(:log_file) { "tmp/crystalball.log" }
-  let!(:stdout_logger) { ::Logger.new(output_stream) }
-  let!(:file_logger) { ::Logger.new(log_file_output_stream) }
   let(:configured_level) { "warn" }
 
   around do |example|
     Crystalball.reset_logger
+    Crystalball.instance_variable_set(:@config, Crystalball::RSpec::Runner::Configuration.new({
+      log_file: log_file,
+      log_level: configured_level
+    }))
 
-    old_log_file = ENV["CRYSTALBALL_LOG_FILE"]
-    ENV["CRYSTALBALL_LOG_LEVEL"] = configured_level
-    ENV["CRYSTALBALL_LOG_FILE"] = log_file
+    ClimateControl.modify(CRYSTALBALL_LOG_FILE: log_file, CRYSTALBALL_LOG_LEVEL: configured_level) { example.run }
 
-    example.run
-
-    ENV["CRYSTALBALL_LOG_FILE"] = old_log_file
-    ENV.delete("CRYSTALBALL_LOG_LEVEL")
     Crystalball.reset_logger
+    Crystalball.instance_variable_set(:@config, nil)
   end
 
   before do
