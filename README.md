@@ -12,7 +12,7 @@ Add this line to your application's Gemfile:
 
 ```ruby
 group :test do
-  gem 'crystalball'
+  gem 'gitlab-crystalball'
 end
 ```
 
@@ -48,7 +48,6 @@ In order to release new version, manual pipeline should be triggered via Gitlab 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at <https://github.com/toptal/crystalball>.
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
