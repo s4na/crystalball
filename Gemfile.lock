@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gitlab-crystalball (1.1.0)
+    gitlab-crystalball (1.1.1)
       git (< 4)
       ostruct (< 1)
 
