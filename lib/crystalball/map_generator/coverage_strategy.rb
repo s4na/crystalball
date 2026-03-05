@@ -30,6 +30,12 @@ module Crystalball
       end
 
       def run_after(example_map, example)
+        unless before_coverage
+          log(:warn, "[CoverageStrategy] Skipping coverage detection for #{example.id}: " \
+            "before_coverage is nil (nested context hooks may have cleared it)")
+          return
+        end
+
         log_debug("Recording mappings for example id: #{example.id}")
         mappings = execution_detector.detect(before_coverage, Coverage.peek_result)
         log_debug("#{example.id} recorded #{mappings.size} files")

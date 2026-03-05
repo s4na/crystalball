@@ -16,6 +16,11 @@ module Crystalball
         # @param[Array<String>] list of files affected after example execution
         # @return [Array<String>]
         def detect(before, after)
+          # `before` can be nil when specs run nested example groups inside a
+          # before(:context) hook, causing inner after(:context) hooks to clear
+          # the coverage baseline. CoverageStrategy#run_after logs a warning.
+          return [] unless before
+
           after.filter_map do |file, coverage|
             before_cov = before[file]&.fetch(:lines, [])
             next if before_cov == coverage[:lines]
