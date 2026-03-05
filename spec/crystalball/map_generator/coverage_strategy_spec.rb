@@ -47,5 +47,15 @@ describe Crystalball::MapGenerator::CoverageStrategy do
         generator.run_after(example_group_map, rspec_example)
       end.to change { example_group_map }.to [1, 2, 3]
     end
+
+    context "when before_coverage is nil (no matching run_before)" do
+      it "skips detection and leaves example group map unchanged" do
+        expect(execution_detector).not_to receive(:detect)
+
+        expect do
+          generator.run_after(example_group_map, rspec_example)
+        end.not_to change { example_group_map }
+      end
+    end
   end
 end

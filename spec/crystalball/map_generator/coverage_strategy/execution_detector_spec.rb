@@ -26,5 +26,11 @@ describe Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector do
 
       it { is_expected.to eq([]) }
     end
+
+    context "when before coverage is nil" do
+      let(:before_map) { nil }
+
+      it { is_expected.to eq([]) }
+    end
   end
 end
