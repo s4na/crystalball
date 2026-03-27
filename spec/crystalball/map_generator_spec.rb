@@ -16,7 +16,7 @@ describe Crystalball::MapGenerator do
     let(:rspec_configuration) { spy }
 
     let(:rspec_example) do
-      Struct.new.new
+      Struct.new(:dummy).new(nil)
     end
 
     before do

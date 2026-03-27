@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
     "rubygems_mfa_required" => "false"
   }
 
-  spec.required_ruby_version = "> 3.1.0"
+  spec.required_ruby_version = ">= 2.7.0"
 
   spec.files         = Dir["README.md", "LICENSE", "lib/**/*.rb", "bin/crystalball"]
   spec.bindir        = "bin"
@@ -35,8 +35,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "git", "< 4"
   spec.add_dependency "ostruct", "< 1"
 
-  spec.add_development_dependency "actionview", "~> 8.0.2"
-  spec.add_development_dependency "activerecord", "~> 8.0.2"
+  spec.add_development_dependency "actionview", ">= 6.0"
+  spec.add_development_dependency "activerecord", ">= 6.0"
   spec.add_development_dependency "climate_control", "~> 1.2.0"
   spec.add_development_dependency "factory_bot", "~> 6.5.1"
   spec.add_development_dependency "gitlab-styles", "~> 13.1.0"
@@ -47,6 +47,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.13.0"
   spec.add_development_dependency "semver2", "~> 3.4"
   spec.add_development_dependency "simplecov", "~> 0.22.0"
-  spec.add_development_dependency "sqlite3", "~> 2.6.0"
+  spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "yard", "~> 0.9.37"
 end
