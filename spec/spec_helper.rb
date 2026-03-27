@@ -8,7 +8,7 @@ SimpleCov.start
 SimpleCov.add_filter "bundle/"
 SimpleCov.add_filter "spec/support/shared_contexts/"
 
-Dir[Pathname(__dir__).join("support", "**", "*.rb")].each { |f| require f }
+Dir[Pathname(__dir__).join("support", "**", "*.rb")].sort.each { |f| require f }
 
 require "crystalball"
 
