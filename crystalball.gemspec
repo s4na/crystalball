@@ -4,6 +4,8 @@ lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "crystalball/version"
 
+ruby_version = Gem.ruby_version
+
 Gem::Specification.new do |spec|
   spec.name          = "gitlab-crystalball"
   spec.version       = Crystalball::VERSION
@@ -35,18 +37,24 @@ Gem::Specification.new do |spec|
   spec.add_dependency "git", "< 4"
   spec.add_dependency "ostruct", "< 1"
 
-  spec.add_development_dependency "actionview", ">= 6.0"
-  spec.add_development_dependency "activerecord", ">= 6.0"
+  spec.add_development_dependency "actionview", ">= 6.0", "< 9"
+  spec.add_development_dependency "activerecord", ">= 6.0", "< 9"
   spec.add_development_dependency "climate_control", "~> 1.2.0"
-  spec.add_development_dependency "factory_bot", "~> 6.5.1"
-  spec.add_development_dependency "gitlab-styles", "~> 13.1.0"
+  spec.add_development_dependency "factory_bot", "~> 6.5.1" if ruby_version >= Gem::Version.new("3.0")
+  spec.add_development_dependency "gitlab-styles", "~> 13.1.0" if ruby_version >= Gem::Version.new("3.1")
   spec.add_development_dependency "i18n", "~> 1.14.7"
-  spec.add_development_dependency "parser", "~> 3.3.8.0"
+  spec.add_development_dependency "parser", "~> 3.3.8.0" if ruby_version >= Gem::Version.new("3.1")
   spec.add_development_dependency "pry", "~> 0.15.2"
   spec.add_development_dependency "rake", "~> 13.2"
   spec.add_development_dependency "rspec", "~> 3.13.0"
   spec.add_development_dependency "semver2", "~> 3.4"
   spec.add_development_dependency "simplecov", "~> 0.22.0"
-  spec.add_development_dependency "sqlite3"
+
+  if ruby_version < Gem::Version.new("3.0")
+    spec.add_development_dependency "sqlite3", ">= 1.4", "< 1.7"
+  else
+    spec.add_development_dependency "sqlite3", ">= 1.4", "< 3"
+  end
+
   spec.add_development_dependency "yard", "~> 0.9.37"
 end
