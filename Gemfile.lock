@@ -198,8 +198,8 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  actionview (>= 6.0)
-  activerecord (>= 6.0)
+  actionview (>= 6.0, < 9)
+  activerecord (>= 6.0, < 9)
   climate_control (~> 1.2.0)
   factory_bot (~> 6.5.1)
   gitlab-crystalball!
@@ -211,7 +211,7 @@ DEPENDENCIES
   rspec (~> 3.13.0)
   semver2 (~> 3.4)
   simplecov (~> 0.22.0)
-  sqlite3
+  sqlite3 (>= 1.4, < 3)
   yard (~> 0.9.37)
 
 BUNDLED WITH

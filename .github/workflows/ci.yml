@@ -18,6 +18,7 @@ jobs:
       - run: bundle exec rubocop --color
 
   rspec:
+    name: rspec (Ruby ${{ matrix.ruby-version }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -30,15 +31,6 @@ jobs:
       - name: Remove Gemfile.lock for older Rubies
         if: matrix.ruby-version == '2.7' || matrix.ruby-version == '3.0' || matrix.ruby-version == '3.1'
         run: rm -f Gemfile.lock
-      - name: Remove Ruby 3.1+ only dependencies
-        if: matrix.ruby-version == '2.7' || matrix.ruby-version == '3.0' || matrix.ruby-version == '3.1'
-        run: |
-          sed -i '/gitlab-styles/d' crystalball.gemspec
-          sed -i '/parser/d' crystalball.gemspec
-      - name: Remove Ruby 3.0+ only dependencies
-        if: matrix.ruby-version == '2.7'
-        run: |
-          sed -i '/factory_bot/d' crystalball.gemspec
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
