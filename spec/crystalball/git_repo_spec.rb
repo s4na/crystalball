@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "git"
+require "open3"
+require "rbconfig"
 require "spec_helper"
 
 describe Crystalball::GitRepo do
@@ -24,6 +27,43 @@ describe Crystalball::GitRepo do
       end
 
       it { is_expected.to eq nil }
+    end
+
+    context "when git gem cannot be loaded" do
+      let(:repo_root) { File.expand_path("../..", __dir__) }
+      let(:script) do
+        <<~RUBY
+          module RSpec
+            module Core
+              class Runner; end
+            end
+          end
+
+          module Kernel
+            alias_method :original_require_for_git_repo_spec, :require
+
+            def require(path)
+              return true if path == "rspec/core"
+              raise LoadError, path if path == "git"
+
+              original_require_for_git_repo_spec(path)
+            end
+          end
+
+          require "crystalball"
+
+          raise "expected git to be unavailable" if Crystalball::GitRepo.available?
+          raise "expected open to return nil" unless Crystalball::GitRepo.open(".").nil?
+        RUBY
+      end
+
+      it "returns nil without loading ruby-git" do
+        _, stderr, status = Open3.capture3(
+          RbConfig.ruby, "-Ilib", "-e", script, chdir: repo_root
+        )
+
+        expect(status).to be_success, stderr
+      end
     end
 
     context "when .git directory does not exist" do

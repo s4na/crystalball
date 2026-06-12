@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "git"
 require "crystalball/source_diff"
 
 module Crystalball
@@ -11,6 +10,8 @@ module Crystalball
     class << self
       # @return [Crystalball::GitRepo, nil] instance for given path
       def open(repo_path)
+        return unless available?
+
         path = Pathname(repo_path)
         # A mounted .git directory can still be unusable inside CI containers.
         new(path).tap { |repo| repo.send(:repo) } if exists?(path)
@@ -18,9 +19,23 @@ module Crystalball
         nil
       end
 
+      def available?
+        load_git
+      end
+
       # Check if given path contains a .git folder
       def exists?(path)
         path.join(".git").directory?
+      end
+
+      private
+
+      def load_git
+        require "git"
+        require "crystalball/extensions/git"
+        true
+      rescue LoadError
+        false
       end
     end
 
@@ -50,6 +65,8 @@ module Crystalball
     private
 
     def repo
+      raise LoadError, "git gem is required to use #{self.class}" unless self.class.available?
+
       @repo ||= Git.open(repo_path)
     end
   end
