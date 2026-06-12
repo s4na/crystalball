@@ -34,7 +34,9 @@ module Crystalball
         require "git"
         require "crystalball/extensions/git"
         true
-      rescue LoadError
+      rescue LoadError => e
+        raise unless e.path == "git"
+
         false
       end
     end

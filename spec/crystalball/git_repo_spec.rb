@@ -44,7 +44,11 @@ describe Crystalball::GitRepo do
 
             def require(path)
               return true if path == "rspec/core"
-              raise LoadError, path if path == "git"
+              if path == "git"
+                error = LoadError.new("cannot load such file -- git")
+                error.instance_variable_set(:@path, "git")
+                raise error
+              end
 
               original_require_for_git_repo_spec(path)
             end
@@ -57,12 +61,30 @@ describe Crystalball::GitRepo do
         RUBY
       end
 
-      it "returns nil without loading ruby-git" do
+      it "returns nil when ruby-git is unavailable after requiring crystalball" do
         _, stderr, status = Open3.capture3(
           RbConfig.ruby, "-Ilib", "-e", script, chdir: repo_root
         )
 
         expect(status).to be_success, stderr
+      end
+    end
+
+    context "when a non-git dependency cannot be loaded" do
+      let(:load_error) do
+        LoadError.new("cannot load such file -- some_dependency").tap do |error|
+          error.instance_variable_set(:@path, "some_dependency")
+        end
+      end
+
+      before do
+        allow(described_class).to receive(:require).with("git").and_return true
+        allow(described_class).to receive(:require)
+          .with("crystalball/extensions/git").and_raise(load_error)
+      end
+
+      it "raises the load error" do
+        expect { described_class.open(".") }.to raise_error(load_error)
       end
     end
 
