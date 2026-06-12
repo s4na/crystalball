@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "git"
 require "rails_helper"
 
 describe Crystalball::Rails::TablesMapGenerator do

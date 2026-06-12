@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "git"
 require "spec_helper"
 
 describe Crystalball::Predictor::ModifiedExecutionPaths do

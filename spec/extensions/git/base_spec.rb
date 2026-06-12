@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "crystalball/extensions/git"
 
 describe Git::Base do
   let(:repo) { Git.open(".") }

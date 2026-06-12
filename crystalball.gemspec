@@ -34,13 +34,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
   spec.executables   = [File.basename("bin/crystalball")]
 
-  spec.add_dependency "git", "< 4"
   spec.add_dependency "ostruct", "< 1"
 
   spec.add_development_dependency "actionview", ">= 6.0", "< 9"
   spec.add_development_dependency "activerecord", ">= 6.0", "< 9"
   spec.add_development_dependency "climate_control", "~> 1.2.0"
   spec.add_development_dependency "factory_bot", "~> 6.5.1" if ruby_version >= Gem::Version.new("3.0")
+  spec.add_development_dependency "git", "< 4"
   spec.add_development_dependency "gitlab-styles", "~> 13.1.0" if ruby_version >= Gem::Version.new("3.1")
   spec.add_development_dependency "i18n", "~> 1.14.7"
   spec.add_development_dependency "parser", "~> 3.3.8.0" if ruby_version >= Gem::Version.new("3.1")
