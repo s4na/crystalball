@@ -11,9 +11,19 @@ describe Crystalball::GitRepo do
     context "when .git directory exist" do
       before do
         allow(described_class).to receive(:exists?).with(Pathname(".")).and_return true
+        allow(Git).to receive(:open).with(Pathname(".")).and_return(Git::Base.new)
       end
 
       it { is_expected.to be_a described_class }
+    end
+
+    context "when .git directory exists but cannot be opened as a worktree" do
+      before do
+        allow(described_class).to receive(:exists?).with(Pathname(".")).and_return true
+        allow(Git).to receive(:open).with(Pathname(".")).and_raise(ArgumentError, "'.' is not in a git working tree")
+      end
+
+      it { is_expected.to eq nil }
     end
 
     context "when .git directory does not exist" do

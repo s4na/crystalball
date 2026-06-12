@@ -12,7 +12,10 @@ module Crystalball
       # @return [Crystalball::GitRepo] instance for given path
       def open(repo_path)
         path = Pathname(repo_path)
-        new(path) if exists?(path)
+        # A mounted .git directory can still be unusable inside CI containers.
+        new(path).tap { |repo| repo.send(:repo) } if exists?(path)
+      rescue ArgumentError
+        nil
       end
 
       # Check if given path is under git control (contains .git folder)
