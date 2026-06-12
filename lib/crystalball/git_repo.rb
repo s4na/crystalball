@@ -9,7 +9,7 @@ module Crystalball
     attr_reader :repo_path
 
     class << self
-      # @return [Crystalball::GitRepo] instance for given path
+      # @return [Crystalball::GitRepo, nil] instance for given path
       def open(repo_path)
         path = Pathname(repo_path)
         # A mounted .git directory can still be unusable inside CI containers.
@@ -18,7 +18,7 @@ module Crystalball
         nil
       end
 
-      # Check if given path is under git control (contains .git folder)
+      # Check if given path contains a .git folder
       def exists?(path)
         path.join(".git").directory?
       end
