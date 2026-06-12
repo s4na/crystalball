@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "fileutils"
 require "spec_helper"
+require "tmpdir"
 
 describe Crystalball::GitRepo do
   subject(:git_repo) { described_class.new(Pathname(".")) }
@@ -11,9 +13,22 @@ describe Crystalball::GitRepo do
     context "when .git directory exist" do
       before do
         allow(described_class).to receive(:exists?).with(Pathname(".")).and_return true
+        allow(Git).to receive(:open).with(Pathname(".")).and_return(Git::Base.new)
       end
 
       it { is_expected.to be_a described_class }
+    end
+
+    context "when .git directory exists but cannot be opened as a worktree" do
+      subject do
+        Dir.mktmpdir do |dir|
+          FileUtils.mkdir_p(File.join(dir, ".git"))
+
+          described_class.open(dir)
+        end
+      end
+
+      it { is_expected.to eq nil }
     end
 
     context "when .git directory does not exist" do
