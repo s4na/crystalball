@@ -11,7 +11,7 @@ describe Crystalball do
 
     before do
       allow(Crystalball::MapStorage::YAMLStorage).to receive(:load).with(Pathname("crystalball_data.yml")).and_return(map)
-      allow(Crystalball::GitRepo).to receive(:new).with(Pathname(".")).and_return(repo)
+      allow(Crystalball::GitRepo).to receive(:open).with(Pathname(".")).and_return(repo)
     end
 
     it "initializes predictor and returns example_groups" do
