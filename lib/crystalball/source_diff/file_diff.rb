@@ -37,6 +37,35 @@ module Crystalball
         git_diff.patch.match(/rename from.*\nrename to (.*)/)[1]
       end
 
+      # @return [Array<Integer>] changed line numbers in the new version of the file
+      def changed_lines
+        return [] unless modified? || new?
+
+        changed_lines = []
+        new_line = nil
+
+        patch.to_s.each_line do |line|
+          if (match = line.match(/^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/))
+            new_line = match[1].to_i
+            next
+          end
+
+          next unless new_line
+
+          case line[0]
+          when "+"
+            changed_lines << new_line unless line.start_with?("+++")
+            new_line += 1
+          when "-"
+            next
+          else
+            new_line += 1 unless line.start_with?("\\ No newline")
+          end
+        end
+
+        changed_lines
+      end
+
       def method_missing(method, *args, &block)
         git_diff.public_send(method, *args, &block) || super
       end

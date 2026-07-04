@@ -11,8 +11,35 @@ module Crystalball
         # @return [Array<String>] list of affected examples
         def detect_examples(files, map)
           map.example_groups.map do |uid, example_group_map|
-            uid if files.any? { |file| example_group_map.include?(file) }
+            uid if files.any? { |file| affected_by_file?(file, example_group_map) }
           end.compact
+        end
+
+        private
+
+        def affected_by_file?(file, example_group_map)
+          example_group_map.any? do |entry|
+            case entry
+            when String
+              entry == relative_path(file)
+            when Hash
+              affected_by_line_map?(file, entry)
+            end
+          end
+        end
+
+        def relative_path(file)
+          file.respond_to?(:relative_path) ? file.relative_path : file
+        end
+
+        def affected_by_line_map?(file, line_map)
+          executed_lines = line_map[relative_path(file)]
+          return false unless executed_lines
+
+          changed_lines = file.respond_to?(:changed_lines) ? file.changed_lines : []
+          return true if changed_lines.empty?
+
+          (changed_lines & executed_lines).any?
         end
       end
     end

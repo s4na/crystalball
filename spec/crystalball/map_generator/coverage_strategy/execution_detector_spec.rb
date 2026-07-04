@@ -13,7 +13,7 @@ describe Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector do
   describe "#detect" do
     subject { detector.detect(before_map, after_map) }
 
-    it { is_expected.to eq(%w[file.rb]) }
+    it { is_expected.to eq([{ "file.rb" => [2] }]) }
 
     context "with no changes" do
       let(:after_map) { { path => { lines: [0, 2, nil] } } }

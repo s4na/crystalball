@@ -30,7 +30,12 @@ module Crystalball
       # @param [Crystalball::ExampleGroupMap] example_map - object holding example metadata and used files
       # @param [RSpec::Core::Example] example - a RSpec example
       def run_after(example_map, example)
-        paths = filter(Coverage.result(stop: true, clear: true).keys)
+        paths = Coverage.result(stop: true, clear: true).filter_map do |path, lines|
+          relative_path = valid_path(path)
+          next unless relative_path
+
+          { relative_path => lines }
+        end
         log_debug("#{example.id} recorded #{paths.size} files")
         example_map.push(*paths)
       end

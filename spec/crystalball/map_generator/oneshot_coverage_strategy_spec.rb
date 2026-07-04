@@ -41,7 +41,9 @@ describe Crystalball::MapGenerator::OneshotCoverageStrategy do
     end
 
     it "pushes used files detected by detector to example group map" do
-      expect { generator.run_after(example_group_map, example) }.to change { example_group_map }.to %w[file_1 file_2]
+      expect { generator.run_after(example_group_map, example) }
+        .to change { example_group_map }
+        .to([{ "file_1" => [1, 2] }, { "file_2" => [1, 2] }])
     end
   end
 end
