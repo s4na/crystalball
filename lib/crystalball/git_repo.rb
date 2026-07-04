@@ -7,6 +7,11 @@ module Crystalball
   class GitRepo
     attr_reader :repo_path
 
+    class UnavailableError < StandardError; end
+
+    UNAVAILABLE_MESSAGE = "Git repository is required to build source diff. " \
+                          "Ensure .git is present, git gem is installed, and the repository can be opened."
+
     class << self
       # @return [Crystalball::GitRepo, nil] instance for given path
       def open(repo_path)

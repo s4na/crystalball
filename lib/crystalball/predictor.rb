@@ -31,6 +31,8 @@ module Crystalball
     end
 
     def diff
+      raise GitRepo::UnavailableError, GitRepo::UNAVAILABLE_MESSAGE unless repo
+
       @diff ||= begin
                   ancestor = repo.merge_base(from, to || "HEAD").sha
                   repo.diff(ancestor, to)

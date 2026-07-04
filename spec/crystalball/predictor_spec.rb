@@ -44,4 +44,15 @@ describe Crystalball::Predictor do
       end
     end
   end
+
+  describe "#diff" do
+    context "when repository is nil" do
+      subject(:predictor) { described_class.new(map, nil) }
+
+      it "raises a clear git repository error" do
+        expect { predictor.diff }
+          .to raise_error(Crystalball::GitRepo::UnavailableError, Crystalball::GitRepo::UNAVAILABLE_MESSAGE)
+      end
+    end
+  end
 end

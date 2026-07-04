@@ -36,7 +36,10 @@ module Crystalball
   #   end
   def self.foresee(workdir: ".", map_path: "crystalball_data.yml", &block)
     map = MapStorage::YAMLStorage.load(Pathname(map_path))
-    Predictor.new(map, GitRepo.open(Pathname(workdir)), from: map.commit, &block).prediction.compact
+    repo = GitRepo.open(Pathname(workdir))
+    raise GitRepo::UnavailableError, GitRepo::UNAVAILABLE_MESSAGE unless repo
+
+    Predictor.new(map, repo, from: map.commit, &block).prediction.compact
   end
 
   extend Logging
