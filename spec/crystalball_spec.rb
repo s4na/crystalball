@@ -21,5 +21,16 @@ describe Crystalball do
 
       expect(described_class.foresee).to eq compact_prediction
     end
+
+    context "when git repository cannot be opened" do
+      before do
+        allow(Crystalball::GitRepo).to receive(:open).with(Pathname(".")).and_return(nil)
+      end
+
+      it "raises a clear git repository error" do
+        expect { described_class.foresee }
+          .to raise_error(Crystalball::GitRepo::UnavailableError, Crystalball::GitRepo::UNAVAILABLE_MESSAGE)
+      end
+    end
   end
 end

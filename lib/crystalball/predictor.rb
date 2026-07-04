@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "crystalball/git_repo"
+
 module Crystalball
   # Class to predict test failures with given execution map and sources diff
   class Predictor
@@ -31,6 +33,8 @@ module Crystalball
     end
 
     def diff
+      raise GitRepo::UnavailableError, GitRepo::UNAVAILABLE_MESSAGE unless repo
+
       @diff ||= begin
                   ancestor = repo.merge_base(from, to || "HEAD").sha
                   repo.diff(ancestor, to)
