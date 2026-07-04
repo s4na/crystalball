@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "open3"
+require "rbconfig"
 require "spec_helper"
 
 describe Crystalball::Predictor do
@@ -52,6 +54,30 @@ describe Crystalball::Predictor do
       it "raises a clear git repository error" do
         expect { predictor.diff }
           .to raise_error(Crystalball::GitRepo::UnavailableError, Crystalball::GitRepo::UNAVAILABLE_MESSAGE)
+      end
+    end
+
+    context "when predictor is required directly" do
+      let(:script) do
+        <<~RUBY
+          require "crystalball/predictor"
+
+          begin
+            Crystalball::Predictor.new(nil, nil).diff
+          rescue Crystalball::GitRepo::UnavailableError => e
+            raise unless e.message == Crystalball::GitRepo::UNAVAILABLE_MESSAGE
+          else
+            raise "expected Crystalball::GitRepo::UnavailableError"
+          end
+        RUBY
+      end
+
+      it "raises the clear git repository error" do
+        _, stderr, status = Open3.capture3(
+          RbConfig.ruby, "-Ilib", "-e", script, chdir: Pathname(__dir__).join("../..").expand_path
+        )
+
+        expect(status).to be_success, stderr
       end
     end
   end
