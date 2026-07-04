@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "set"
+
 module Crystalball
   class Predictor
     module Helpers
@@ -10,9 +12,11 @@ module Crystalball
         # @param [Crystalball::ExecutionMap] map - execution map with examples
         # @return [Array<String>] list of affected examples
         def detect_examples(files, map)
-          map.example_groups.map do |uid, example_group_map|
-            uid if files.any? { |file| example_group_map.include?(file) }
-          end.compact
+          changed_files = files.to_set
+
+          map.example_groups.each_with_object([]) do |(uid, example_group_map), affected_examples|
+            affected_examples << uid if example_group_map.any? { |file| changed_files.include?(file) }
+          end
         end
       end
     end
