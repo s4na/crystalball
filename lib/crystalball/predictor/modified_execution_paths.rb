@@ -19,7 +19,7 @@ module Crystalball
       # @return [Array<String>] the spec paths associated with the changes
       def call(diff, map)
         super do
-          detect_examples(diff.map(&:relative_path), map)
+          detect_examples(diff, map)
         end
       end
     end

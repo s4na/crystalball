@@ -53,6 +53,57 @@ describe Crystalball::SourceDiff::FileDiff do
     end
   end
 
+  describe "#changed_lines" do
+    subject { file_diff.changed_lines }
+
+    let(:type) { "modified" }
+    let(:diff_file) do
+      Git::Diff::DiffFile.new(
+        Git::Base.new,
+        type: type,
+        path: "lib/crystalball.rb",
+        patch: "@@ -2,4 +2,5 @@\n context\n-removed\n+added\n unchanged\n+another"
+      )
+    end
+
+    it { is_expected.to eq([3, 5]) }
+
+    context "when an added line starts with plus signs" do
+      let(:diff_file) do
+        Git::Diff::DiffFile.new(
+          Git::Base.new,
+          type: type,
+          path: "lib/crystalball.rb",
+          patch: "@@ -1,2 +1,3 @@\n context\n+++value\n unchanged"
+        )
+      end
+
+      it { is_expected.to eq([2]) }
+    end
+
+    context "with a deleted file" do
+      let(:type) { "deleted" }
+
+      it { is_expected.to eq([]) }
+    end
+  end
+
+  describe "#inserted_lines" do
+    subject { file_diff.inserted_lines }
+
+    let(:type) { "modified" }
+    let(:diff_file) do
+      Git::Diff::DiffFile.new(
+        Git::Base.new,
+        type: type,
+        path: "lib/crystalball.rb",
+        patch: "@@ -2,4 +2,5 @@\n context\n-removed\n+added\n unchanged\n+another"
+      )
+    end
+
+    it { is_expected.to eq([5]) }
+  end
+
   describe "#method_missing" do
     it "delegates missing methods to DiffFile" do
       expect(file_diff.path).to eq("lib/crystalball.rb")

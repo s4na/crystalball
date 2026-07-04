@@ -13,7 +13,7 @@ describe Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector do
   describe "#detect" do
     subject { detector.detect(before_map, after_map) }
 
-    it { is_expected.to eq(%w[file.rb]) }
+    it { is_expected.to eq([{ "file.rb" => [2] }]) }
 
     context "with no changes" do
       let(:after_map) { { path => { lines: [0, 2, nil] } } }
@@ -31,6 +31,12 @@ describe Crystalball::MapGenerator::CoverageStrategy::ExecutionDetector do
       let(:before_map) { nil }
 
       it { is_expected.to eq([]) }
+    end
+
+    context "when the file is missing from before coverage" do
+      let(:before_map) { {} }
+
+      it { is_expected.to eq([{ "file.rb" => [1, 2] }]) }
     end
   end
 end

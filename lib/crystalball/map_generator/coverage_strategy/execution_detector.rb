@@ -22,13 +22,25 @@ module Crystalball
           return [] unless before
 
           after.filter_map do |file, coverage|
-            before_cov = before[file]&.fetch(:lines, [])
-            next if before_cov == coverage[:lines]
+            before_cov = before[file]&.fetch(:lines, []) || []
+            after_cov = coverage[:lines]
+            next if before_cov == after_cov
 
             path = valid_path(file)
             next unless path
 
-            path
+            { path => changed_line_numbers(before_cov, after_cov) }
+          end
+        end
+
+        private
+
+        def changed_line_numbers(before_cov, after_cov)
+          after_cov.each_with_index.filter_map do |count, index|
+            next if before_cov[index] == count
+            next unless count
+
+            index + 1
           end
         end
       end
