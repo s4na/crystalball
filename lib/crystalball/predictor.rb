@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "crystalball/git_repo"
+
 module Crystalball
   # Class to predict test failures with given execution map and sources diff
   class Predictor
