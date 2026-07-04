@@ -22,7 +22,7 @@ module Crystalball
           return [] unless before
 
           after.filter_map do |file, coverage|
-            before_cov = before[file]&.fetch(:lines, [])
+            before_cov = before[file]&.fetch(:lines, []) || []
             after_cov = coverage[:lines]
             next if before_cov == after_cov
 

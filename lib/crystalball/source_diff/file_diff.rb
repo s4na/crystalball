@@ -42,28 +42,23 @@ module Crystalball
         return [] unless modified? || new?
 
         changed_lines = []
-        new_line = nil
 
-        patch.to_s.each_line do |line|
-          if (match = line.match(/^@@ -\d+(?:,\d+)? \+(\d+)(?:,\d+)? @@/))
-            new_line = match[1].to_i
-            next
-          end
-
-          next unless new_line
-
-          case line[0]
-          when "+"
-            changed_lines << new_line unless line.start_with?("+++")
-            new_line += 1
-          when "-"
-            next
-          else
-            new_line += 1 unless line.start_with?("\\ No newline")
-          end
-        end
+        each_changed_line { |new_line, _old_line, _inserted| changed_lines << new_line }
 
         changed_lines
+      end
+
+      # @return [Array<Integer>] newly inserted line numbers in the new version of the file
+      def inserted_lines
+        return [] unless modified? || new?
+
+        inserted_lines = []
+
+        each_changed_line do |new_line, _old_line, inserted|
+          inserted_lines << new_line if inserted
+        end
+
+        inserted_lines
       end
 
       def method_missing(method, *args, &block)
@@ -77,6 +72,40 @@ module Crystalball
       private
 
       attr_reader :git_diff
+
+      def each_changed_line
+        new_line = nil
+        old_line = nil
+        pending_deletions = 0
+
+        patch.to_s.each_line do |line|
+          if (match = line.match(/^@@ -(\d+)(?:,\d+)? \+(\d+)(?:,\d+)? @@/))
+            old_line = match[1].to_i
+            new_line = match[2].to_i
+            pending_deletions = 0
+            next
+          end
+
+          next unless new_line
+
+          case line[0]
+          when "+"
+            inserted = pending_deletions.zero?
+            pending_deletions -= 1 if pending_deletions.positive?
+            yield new_line, old_line, inserted
+            new_line += 1
+          when "-"
+            pending_deletions += 1
+            old_line += 1
+          else
+            next if line.start_with?("\\ No newline")
+
+            pending_deletions = 0
+            new_line += 1
+            old_line += 1
+          end
+        end
+      end
     end
   end
 end

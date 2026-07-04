@@ -38,6 +38,7 @@ module Crystalball
 
           changed_lines = file.respond_to?(:changed_lines) ? file.changed_lines : []
           return true if changed_lines.empty?
+          return true if file.respond_to?(:inserted_lines) && file.inserted_lines.any?
 
           (changed_lines & executed_lines).any?
         end

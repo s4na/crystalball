@@ -37,13 +37,30 @@ describe Crystalball::MapGenerator::OneshotCoverageStrategy do
 
     before do
       allow(Coverage).to receive(:start).with(oneshot_lines: true)
-      allow(Coverage).to receive(:result).and_return({ "#{Dir.pwd}/file_1" => [1, 2], "#{Dir.pwd}/file_2" => [1, 2] })
+      allow(Coverage).to receive(:result).and_return(
+        {
+          "#{Dir.pwd}/file_1" => {oneshot_lines: [1, 2]},
+          "#{Dir.pwd}/file_2" => {oneshot_lines: [1, 2]}
+        }
+      )
     end
 
     it "pushes used files detected by detector to example group map" do
       expect { generator.run_after(example_group_map, example) }
         .to change { example_group_map }
         .to([{ "file_1" => [1, 2] }, { "file_2" => [1, 2] }])
+    end
+
+    context "with legacy array coverage values" do
+      before do
+        allow(Coverage).to receive(:result).and_return({ "#{Dir.pwd}/file_1" => [1, 2] })
+      end
+
+      it "pushes the array unchanged" do
+        expect { generator.run_after(example_group_map, example) }
+          .to change { example_group_map }
+          .to([{ "file_1" => [1, 2] }])
+      end
     end
   end
 end

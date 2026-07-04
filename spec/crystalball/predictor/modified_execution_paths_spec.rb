@@ -59,5 +59,21 @@ describe Crystalball::Predictor::ModifiedExecutionPaths do
 
       it { is_expected.to eq([]) }
     end
+
+    context "when line-level coverage map covers a file with inserted lines" do
+      let(:file_diff1) do
+        Crystalball::SourceDiff::FileDiff.new(
+          Git::Diff::DiffFile.new(
+            repository,
+            type: "modified",
+            path: path1,
+            patch: "@@ -1,2 +1,3 @@\n line 1\n+inserted\n line 2"
+          )
+        )
+      end
+      let(:example_groups) { {"spec_file" => [{path1 => [1]}]} }
+
+      it { is_expected.to eq(["./spec_file"]) }
+    end
   end
 end
